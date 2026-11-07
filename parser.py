@@ -1,4 +1,4 @@
-#Синтаксический анализатор языка alg - токены to AST.
+# Синтаксический анализатор языка alg: рекурсивный спуск, токены -> AST.
 
 from __future__ import annotations
 
@@ -55,6 +55,7 @@ class Binary:
 
 
 Expr = Number | String | Name | Index | Call | Unary | Binary
+
 
 @dataclass(frozen=True)
 class Let:
@@ -120,6 +121,7 @@ class Function:
 class Program:
     globals: tuple[Let, ...] = field(default_factory=tuple)
     functions: tuple[Function, ...] = field(default_factory=tuple)
+
 
 # Парсер
 
@@ -259,7 +261,7 @@ class Parser:
             else:
                 otherwise = self.block()
         return If(cond, then, otherwise, line)
-    
+
     # Присваивание или выражение
     def assign_or_expr(self) -> Stmt:
         line = self.current.line
@@ -342,7 +344,6 @@ def parse(source: str) -> Program:
 
 
 def dump_expr(expr: Expr) -> str:
-    # Выражение в виде S
     match expr:
         case Number(value):
             return str(value)
