@@ -1,0 +1,737 @@
+in_source: |
+  // Приоритеты, деление с округлением к нулю, сдвиги, пул литералов, короткие && и ||.
+
+  let calls = 0;
+
+  fn print_int(n) {
+      let digits[10];
+      if (n < 0) {
+          out(1, '-');
+      } else {
+          n = -n;
+      }
+      // Работаем с n <= 0, иначе -2147483648 не напечатать.
+      let count = 0;
+      while (count == 0 || n != 0) {
+          digits[count] = '0' - n % 10;
+          n = n / 10;
+          count = count + 1;
+      }
+      while (count > 0) {
+          count = count - 1;
+          out(1, digits[count]);
+      }
+  }
+
+  fn show(n) {
+      print_int(n);
+      out(1, '\n');
+  }
+
+  fn touch() {
+      calls = calls + 1;
+      return 1;
+  }
+
+  fn main() {
+      let a = 7;
+      let b = -3;
+      show(a + b * 2 - (a - b) / 3);
+      show(a / b);
+      show(a % b);
+      show(-a % 3);
+      show(1 << 31);
+      show(-1 >> 28);
+      show(0x12345678);
+      show(2147483647 + 1);
+      show((a & 5 | 8) ^ 1);
+      show(~a);
+      show(!a + !0);
+      show(a > b == 1);
+      show(b < 0 || touch());
+      show(a < 0 && touch());
+      show(a > 0 && touch());
+      show(calls);
+  }
+in_stdin: |
+  []
+out_log: |
+  DEBUG   machine:log           TICK:      1 | 0x0000 fetch  | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 ; reset vector
+  DEBUG   machine:log           TICK:      2 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | mem read 0x0000: miss set 0 way 0, fill 0x0000, wait memory (10 left) ; reset vector
+  DEBUG   machine:log           TICK:      3 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (9 left) ; reset vector
+  DEBUG   machine:log           TICK:      4 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (8 left) ; reset vector
+  DEBUG   machine:log           TICK:      5 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (7 left) ; reset vector
+  DEBUG   machine:log           TICK:      6 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (6 left) ; reset vector
+  DEBUG   machine:log           TICK:      7 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (5 left) ; reset vector
+  DEBUG   machine:log           TICK:      8 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (4 left) ; reset vector
+  DEBUG   machine:log           TICK:      9 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (3 left) ; reset vector
+  DEBUG   machine:log           TICK:     10 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (2 left) ; reset vector
+  DEBUG   machine:log           TICK:     11 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (1 left) ; reset vector
+  DEBUG   machine:log           TICK:     12 | 0x0000 read   | PC: 0x0004 AR: 0x0000 IR: jmp 0x0008  TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 ; reset vector
+  DEBUG   machine:log           TICK:     13 | 0x0000 exec 1 | PC: 0x0008 AR: 0x0000 IR: jmp 0x0008  TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 ; reset vector
+  DEBUG   machine:log           TICK:     14 | 0x0008 fetch  | PC: 0x0008 AR: 0x0008 IR: jmp 0x0008  TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 ; start
+  DEBUG   machine:log           TICK:     15 | 0x0008 read   | PC: 0x000C AR: 0x0008 IR: call 0x01A0 TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | mem read 0x0008: hit set 0 way 0 ; start
+  DEBUG   machine:log           TICK:     16 | 0x0008 exec 1 | PC: 0x01A0 AR: 0x0008 IR: call 0x01A0 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 ; start
+  DEBUG   machine:log           TICK:     17 | 0x01A0 fetch  | PC: 0x01A0 AR: 0x01A0 IR: call 0x01A0 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     18 | 0x01A0 read   | PC: 0x01A0 AR: 0x01A0 IR: call 0x01A0 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | mem read 0x01A0: miss set 10 way 0, fill 0x01A0, wait memory (10 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     19 | 0x01A0 read   | PC: 0x01A0 AR: 0x01A0 IR: call 0x01A0 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (9 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     20 | 0x01A0 read   | PC: 0x01A0 AR: 0x01A0 IR: call 0x01A0 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (8 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     21 | 0x01A0 read   | PC: 0x01A0 AR: 0x01A0 IR: call 0x01A0 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (7 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     22 | 0x01A0 read   | PC: 0x01A0 AR: 0x01A0 IR: call 0x01A0 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (6 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     23 | 0x01A0 read   | PC: 0x01A0 AR: 0x01A0 IR: call 0x01A0 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (5 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     24 | 0x01A0 read   | PC: 0x01A0 AR: 0x01A0 IR: call 0x01A0 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (4 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     25 | 0x01A0 read   | PC: 0x01A0 AR: 0x01A0 IR: call 0x01A0 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (3 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     26 | 0x01A0 read   | PC: 0x01A0 AR: 0x01A0 IR: call 0x01A0 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (2 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     27 | 0x01A0 read   | PC: 0x01A0 AR: 0x01A0 IR: call 0x01A0 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (1 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     28 | 0x01A0 read   | PC: 0x01A4 AR: 0x01A0 IR: push 7      TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     29 | 0x01A0 exec 1 | PC: 0x01A4 AR: 0x01A0 IR: push 7      TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     30 | 0x01A4 fetch  | PC: 0x01A4 AR: 0x01A4 IR: push 7      TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     31 | 0x01A4 read   | PC: 0x01A8 AR: 0x01A4 IR: push 1032   TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | mem read 0x01A4: hit set 10 way 0 ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     32 | 0x01A4 exec 1 | PC: 0x01A8 AR: 0x01A4 IR: push 1032   TOS: 1032 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     33 | 0x01A8 fetch  | PC: 0x01A8 AR: 0x01A8 IR: push 1032   TOS: 1032 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     34 | 0x01A8 read   | PC: 0x01AC AR: 0x01A8 IR: store       TOS: 1032 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 | mem read 0x01A8: hit set 10 way 0 ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     35 | 0x01A8 exec 1 | PC: 0x01AC AR: 0x0408 IR: store       TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     36 | 0x01A8 exec 2 | PC: 0x01AC AR: 0x0408 IR: store       TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | mem write 0x0408: miss set 0 way 1, fill 0x0400, wait memory (10 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     37 | 0x01A8 exec 2 | PC: 0x01AC AR: 0x0408 IR: store       TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (9 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     38 | 0x01A8 exec 2 | PC: 0x01AC AR: 0x0408 IR: store       TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (8 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     39 | 0x01A8 exec 2 | PC: 0x01AC AR: 0x0408 IR: store       TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (7 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     40 | 0x01A8 exec 2 | PC: 0x01AC AR: 0x0408 IR: store       TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (6 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     41 | 0x01A8 exec 2 | PC: 0x01AC AR: 0x0408 IR: store       TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (5 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     42 | 0x01A8 exec 2 | PC: 0x01AC AR: 0x0408 IR: store       TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (4 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     43 | 0x01A8 exec 2 | PC: 0x01AC AR: 0x0408 IR: store       TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (3 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     44 | 0x01A8 exec 2 | PC: 0x01AC AR: 0x0408 IR: store       TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (2 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     45 | 0x01A8 exec 2 | PC: 0x01AC AR: 0x0408 IR: store       TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (1 left) ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     46 | 0x01A8 exec 2 | PC: 0x01AC AR: 0x0408 IR: store       TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     47 | 0x01A8 exec 3 | PC: 0x01AC AR: 0x0408 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 ; 36: let a = 7;
+  DEBUG   machine:log           TICK:     48 | 0x01AC fetch  | PC: 0x01AC AR: 0x01AC IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     49 | 0x01AC read   | PC: 0x01B0 AR: 0x01AC IR: push -3     TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | mem read 0x01AC: hit set 10 way 0 ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     50 | 0x01AC exec 1 | PC: 0x01B0 AR: 0x01AC IR: push -3     TOS: -3 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     51 | 0x01B0 fetch  | PC: 0x01B0 AR: 0x01B0 IR: push -3     TOS: -3 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     52 | 0x01B0 read   | PC: 0x01B0 AR: 0x01B0 IR: push -3     TOS: -3 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | mem read 0x01B0: miss set 11 way 0, fill 0x01B0, wait memory (10 left) ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     53 | 0x01B0 read   | PC: 0x01B0 AR: 0x01B0 IR: push -3     TOS: -3 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (9 left) ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     54 | 0x01B0 read   | PC: 0x01B0 AR: 0x01B0 IR: push -3     TOS: -3 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (8 left) ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     55 | 0x01B0 read   | PC: 0x01B0 AR: 0x01B0 IR: push -3     TOS: -3 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (7 left) ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     56 | 0x01B0 read   | PC: 0x01B0 AR: 0x01B0 IR: push -3     TOS: -3 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (6 left) ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     57 | 0x01B0 read   | PC: 0x01B0 AR: 0x01B0 IR: push -3     TOS: -3 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (5 left) ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     58 | 0x01B0 read   | PC: 0x01B0 AR: 0x01B0 IR: push -3     TOS: -3 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (4 left) ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     59 | 0x01B0 read   | PC: 0x01B0 AR: 0x01B0 IR: push -3     TOS: -3 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (3 left) ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     60 | 0x01B0 read   | PC: 0x01B0 AR: 0x01B0 IR: push -3     TOS: -3 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (2 left) ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     61 | 0x01B0 read   | PC: 0x01B0 AR: 0x01B0 IR: push -3     TOS: -3 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (1 left) ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     62 | 0x01B0 read   | PC: 0x01B4 AR: 0x01B0 IR: push 1036   TOS: -3 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     63 | 0x01B0 exec 1 | PC: 0x01B4 AR: 0x01B0 IR: push 1036   TOS: 1036 NOS: -3 SP: 2 RSP: 1 IE: 0 INT: 0 ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     64 | 0x01B4 fetch  | PC: 0x01B4 AR: 0x01B4 IR: push 1036   TOS: 1036 NOS: -3 SP: 2 RSP: 1 IE: 0 INT: 0 ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     65 | 0x01B4 read   | PC: 0x01B8 AR: 0x01B4 IR: store       TOS: 1036 NOS: -3 SP: 2 RSP: 1 IE: 0 INT: 0 | mem read 0x01B4: hit set 11 way 0 ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     66 | 0x01B4 exec 1 | PC: 0x01B8 AR: 0x040C IR: store       TOS: -3 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     67 | 0x01B4 exec 2 | PC: 0x01B8 AR: 0x040C IR: store       TOS: -3 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | mem write 0x040C: hit set 0 way 1 ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     68 | 0x01B4 exec 3 | PC: 0x01B8 AR: 0x040C IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 ; 37: let b = -3;
+  DEBUG   machine:log           TICK:     69 | 0x01B8 fetch  | PC: 0x01B8 AR: 0x01B8 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     70 | 0x01B8 read   | PC: 0x01BC AR: 0x01B8 IR: push 1032   TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | mem read 0x01B8: hit set 11 way 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     71 | 0x01B8 exec 1 | PC: 0x01BC AR: 0x01B8 IR: push 1032   TOS: 1032 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     72 | 0x01BC fetch  | PC: 0x01BC AR: 0x01BC IR: push 1032   TOS: 1032 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     73 | 0x01BC read   | PC: 0x01C0 AR: 0x01BC IR: load        TOS: 1032 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | mem read 0x01BC: hit set 11 way 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     74 | 0x01BC exec 1 | PC: 0x01C0 AR: 0x0408 IR: load        TOS: 1032 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     75 | 0x01BC exec 2 | PC: 0x01C0 AR: 0x0408 IR: load        TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | mem read 0x0408: hit set 0 way 1 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     76 | 0x01C0 fetch  | PC: 0x01C0 AR: 0x01C0 IR: load        TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     77 | 0x01C0 read   | PC: 0x01C0 AR: 0x01C0 IR: load        TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | mem read 0x01C0: miss set 12 way 0, fill 0x01C0, wait memory (10 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     78 | 0x01C0 read   | PC: 0x01C0 AR: 0x01C0 IR: load        TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (9 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     79 | 0x01C0 read   | PC: 0x01C0 AR: 0x01C0 IR: load        TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (8 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     80 | 0x01C0 read   | PC: 0x01C0 AR: 0x01C0 IR: load        TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (7 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     81 | 0x01C0 read   | PC: 0x01C0 AR: 0x01C0 IR: load        TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (6 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     82 | 0x01C0 read   | PC: 0x01C0 AR: 0x01C0 IR: load        TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (5 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     83 | 0x01C0 read   | PC: 0x01C0 AR: 0x01C0 IR: load        TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (4 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     84 | 0x01C0 read   | PC: 0x01C0 AR: 0x01C0 IR: load        TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (3 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     85 | 0x01C0 read   | PC: 0x01C0 AR: 0x01C0 IR: load        TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (2 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     86 | 0x01C0 read   | PC: 0x01C0 AR: 0x01C0 IR: load        TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | wait memory (1 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     87 | 0x01C0 read   | PC: 0x01C4 AR: 0x01C0 IR: push 1036   TOS: 7 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     88 | 0x01C0 exec 1 | PC: 0x01C4 AR: 0x01C0 IR: push 1036   TOS: 1036 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     89 | 0x01C4 fetch  | PC: 0x01C4 AR: 0x01C4 IR: push 1036   TOS: 1036 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     90 | 0x01C4 read   | PC: 0x01C8 AR: 0x01C4 IR: load        TOS: 1036 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 | mem read 0x01C4: hit set 12 way 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     91 | 0x01C4 exec 1 | PC: 0x01C8 AR: 0x040C IR: load        TOS: 1036 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     92 | 0x01C4 exec 2 | PC: 0x01C8 AR: 0x040C IR: load        TOS: -3 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 | mem read 0x040C: hit set 0 way 1 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     93 | 0x01C8 fetch  | PC: 0x01C8 AR: 0x01C8 IR: load        TOS: -3 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     94 | 0x01C8 read   | PC: 0x01CC AR: 0x01C8 IR: push 2      TOS: -3 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 | mem read 0x01C8: hit set 12 way 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     95 | 0x01C8 exec 1 | PC: 0x01CC AR: 0x01C8 IR: push 2      TOS: 2 NOS: -3 SP: 3 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     96 | 0x01CC fetch  | PC: 0x01CC AR: 0x01CC IR: push 2      TOS: 2 NOS: -3 SP: 3 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     97 | 0x01CC read   | PC: 0x01D0 AR: 0x01CC IR: mul         TOS: 2 NOS: -3 SP: 3 RSP: 1 IE: 0 INT: 0 | mem read 0x01CC: hit set 12 way 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     98 | 0x01CC exec 1 | PC: 0x01D0 AR: 0x01CC IR: mul         TOS: -6 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:     99 | 0x01D0 fetch  | PC: 0x01D0 AR: 0x01D0 IR: mul         TOS: -6 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    100 | 0x01D0 read   | PC: 0x01D0 AR: 0x01D0 IR: mul         TOS: -6 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 | mem read 0x01D0: miss set 13 way 0, fill 0x01D0, wait memory (10 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    101 | 0x01D0 read   | PC: 0x01D0 AR: 0x01D0 IR: mul         TOS: -6 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (9 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    102 | 0x01D0 read   | PC: 0x01D0 AR: 0x01D0 IR: mul         TOS: -6 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (8 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    103 | 0x01D0 read   | PC: 0x01D0 AR: 0x01D0 IR: mul         TOS: -6 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (7 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    104 | 0x01D0 read   | PC: 0x01D0 AR: 0x01D0 IR: mul         TOS: -6 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (6 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    105 | 0x01D0 read   | PC: 0x01D0 AR: 0x01D0 IR: mul         TOS: -6 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (5 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    106 | 0x01D0 read   | PC: 0x01D0 AR: 0x01D0 IR: mul         TOS: -6 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (4 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    107 | 0x01D0 read   | PC: 0x01D0 AR: 0x01D0 IR: mul         TOS: -6 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (3 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    108 | 0x01D0 read   | PC: 0x01D0 AR: 0x01D0 IR: mul         TOS: -6 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (2 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    109 | 0x01D0 read   | PC: 0x01D0 AR: 0x01D0 IR: mul         TOS: -6 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (1 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    110 | 0x01D0 read   | PC: 0x01D4 AR: 0x01D0 IR: add         TOS: -6 NOS: 7 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    111 | 0x01D0 exec 1 | PC: 0x01D4 AR: 0x01D0 IR: add         TOS: 1 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    112 | 0x01D4 fetch  | PC: 0x01D4 AR: 0x01D4 IR: add         TOS: 1 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    113 | 0x01D4 read   | PC: 0x01D8 AR: 0x01D4 IR: push 1032   TOS: 1 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | mem read 0x01D4: hit set 13 way 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    114 | 0x01D4 exec 1 | PC: 0x01D8 AR: 0x01D4 IR: push 1032   TOS: 1032 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    115 | 0x01D8 fetch  | PC: 0x01D8 AR: 0x01D8 IR: push 1032   TOS: 1032 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    116 | 0x01D8 read   | PC: 0x01DC AR: 0x01D8 IR: load        TOS: 1032 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 | mem read 0x01D8: hit set 13 way 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    117 | 0x01D8 exec 1 | PC: 0x01DC AR: 0x0408 IR: load        TOS: 1032 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    118 | 0x01D8 exec 2 | PC: 0x01DC AR: 0x0408 IR: load        TOS: 7 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 | mem read 0x0408: hit set 0 way 1 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    119 | 0x01DC fetch  | PC: 0x01DC AR: 0x01DC IR: load        TOS: 7 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    120 | 0x01DC read   | PC: 0x01E0 AR: 0x01DC IR: push 1036   TOS: 7 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 | mem read 0x01DC: hit set 13 way 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    121 | 0x01DC exec 1 | PC: 0x01E0 AR: 0x01DC IR: push 1036   TOS: 1036 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    122 | 0x01E0 fetch  | PC: 0x01E0 AR: 0x01E0 IR: push 1036   TOS: 1036 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    123 | 0x01E0 read   | PC: 0x01E0 AR: 0x01E0 IR: push 1036   TOS: 1036 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 | mem read 0x01E0: miss set 14 way 0, fill 0x01E0, wait memory (10 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    124 | 0x01E0 read   | PC: 0x01E0 AR: 0x01E0 IR: push 1036   TOS: 1036 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 | wait memory (9 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    125 | 0x01E0 read   | PC: 0x01E0 AR: 0x01E0 IR: push 1036   TOS: 1036 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 | wait memory (8 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    126 | 0x01E0 read   | PC: 0x01E0 AR: 0x01E0 IR: push 1036   TOS: 1036 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 | wait memory (7 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    127 | 0x01E0 read   | PC: 0x01E0 AR: 0x01E0 IR: push 1036   TOS: 1036 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 | wait memory (6 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    128 | 0x01E0 read   | PC: 0x01E0 AR: 0x01E0 IR: push 1036   TOS: 1036 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 | wait memory (5 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    129 | 0x01E0 read   | PC: 0x01E0 AR: 0x01E0 IR: push 1036   TOS: 1036 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 | wait memory (4 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    130 | 0x01E0 read   | PC: 0x01E0 AR: 0x01E0 IR: push 1036   TOS: 1036 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 | wait memory (3 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    131 | 0x01E0 read   | PC: 0x01E0 AR: 0x01E0 IR: push 1036   TOS: 1036 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 | wait memory (2 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    132 | 0x01E0 read   | PC: 0x01E0 AR: 0x01E0 IR: push 1036   TOS: 1036 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 | wait memory (1 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    133 | 0x01E0 read   | PC: 0x01E4 AR: 0x01E0 IR: load        TOS: 1036 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    134 | 0x01E0 exec 1 | PC: 0x01E4 AR: 0x040C IR: load        TOS: 1036 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    135 | 0x01E0 exec 2 | PC: 0x01E4 AR: 0x040C IR: load        TOS: -3 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 | mem read 0x040C: hit set 0 way 1 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    136 | 0x01E4 fetch  | PC: 0x01E4 AR: 0x01E4 IR: load        TOS: -3 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    137 | 0x01E4 read   | PC: 0x01E8 AR: 0x01E4 IR: sub         TOS: -3 NOS: 7 SP: 3 RSP: 1 IE: 0 INT: 0 | mem read 0x01E4: hit set 14 way 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    138 | 0x01E4 exec 1 | PC: 0x01E8 AR: 0x01E4 IR: sub         TOS: 10 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    139 | 0x01E8 fetch  | PC: 0x01E8 AR: 0x01E8 IR: sub         TOS: 10 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    140 | 0x01E8 read   | PC: 0x01EC AR: 0x01E8 IR: push 3      TOS: 10 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 | mem read 0x01E8: hit set 14 way 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    141 | 0x01E8 exec 1 | PC: 0x01EC AR: 0x01E8 IR: push 3      TOS: 3 NOS: 10 SP: 3 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    142 | 0x01EC fetch  | PC: 0x01EC AR: 0x01EC IR: push 3      TOS: 3 NOS: 10 SP: 3 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    143 | 0x01EC read   | PC: 0x01F0 AR: 0x01EC IR: div         TOS: 3 NOS: 10 SP: 3 RSP: 1 IE: 0 INT: 0 | mem read 0x01EC: hit set 14 way 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    144 | 0x01EC exec 1 | PC: 0x01F0 AR: 0x01EC IR: div         TOS: 3 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    145 | 0x01F0 fetch  | PC: 0x01F0 AR: 0x01F0 IR: div         TOS: 3 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    146 | 0x01F0 read   | PC: 0x01F0 AR: 0x01F0 IR: div         TOS: 3 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 | mem read 0x01F0: miss set 15 way 0, fill 0x01F0, wait memory (10 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    147 | 0x01F0 read   | PC: 0x01F0 AR: 0x01F0 IR: div         TOS: 3 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (9 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    148 | 0x01F0 read   | PC: 0x01F0 AR: 0x01F0 IR: div         TOS: 3 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (8 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    149 | 0x01F0 read   | PC: 0x01F0 AR: 0x01F0 IR: div         TOS: 3 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (7 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    150 | 0x01F0 read   | PC: 0x01F0 AR: 0x01F0 IR: div         TOS: 3 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (6 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    151 | 0x01F0 read   | PC: 0x01F0 AR: 0x01F0 IR: div         TOS: 3 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (5 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    152 | 0x01F0 read   | PC: 0x01F0 AR: 0x01F0 IR: div         TOS: 3 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (4 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    153 | 0x01F0 read   | PC: 0x01F0 AR: 0x01F0 IR: div         TOS: 3 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (3 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    154 | 0x01F0 read   | PC: 0x01F0 AR: 0x01F0 IR: div         TOS: 3 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (2 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    155 | 0x01F0 read   | PC: 0x01F0 AR: 0x01F0 IR: div         TOS: 3 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 | wait memory (1 left) ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    156 | 0x01F0 read   | PC: 0x01F4 AR: 0x01F0 IR: sub         TOS: 3 NOS: 1 SP: 2 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    157 | 0x01F0 exec 1 | PC: 0x01F4 AR: 0x01F0 IR: sub         TOS: -2 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    158 | 0x01F4 fetch  | PC: 0x01F4 AR: 0x01F4 IR: sub         TOS: -2 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    159 | 0x01F4 read   | PC: 0x01F8 AR: 0x01F4 IR: call 0x0150 TOS: -2 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | mem read 0x01F4: hit set 15 way 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    160 | 0x01F4 exec 1 | PC: 0x0150 AR: 0x01F4 IR: call 0x0150 TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 38: show(a + b * 2 - (a - b) / 3);
+  DEBUG   machine:log           TICK:    161 | 0x0150 fetch  | PC: 0x0150 AR: 0x0150 IR: call 0x0150 TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    162 | 0x0150 read   | PC: 0x0150 AR: 0x0150 IR: call 0x0150 TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x0150: miss set 5 way 0, fill 0x0150, wait memory (10 left) ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    163 | 0x0150 read   | PC: 0x0150 AR: 0x0150 IR: call 0x0150 TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (9 left) ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    164 | 0x0150 read   | PC: 0x0150 AR: 0x0150 IR: call 0x0150 TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (8 left) ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    165 | 0x0150 read   | PC: 0x0150 AR: 0x0150 IR: call 0x0150 TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (7 left) ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    166 | 0x0150 read   | PC: 0x0150 AR: 0x0150 IR: call 0x0150 TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (6 left) ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    167 | 0x0150 read   | PC: 0x0150 AR: 0x0150 IR: call 0x0150 TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (5 left) ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    168 | 0x0150 read   | PC: 0x0150 AR: 0x0150 IR: call 0x0150 TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (4 left) ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    169 | 0x0150 read   | PC: 0x0150 AR: 0x0150 IR: call 0x0150 TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (3 left) ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    170 | 0x0150 read   | PC: 0x0150 AR: 0x0150 IR: call 0x0150 TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (2 left) ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    171 | 0x0150 read   | PC: 0x0150 AR: 0x0150 IR: call 0x0150 TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (1 left) ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    172 | 0x0150 read   | PC: 0x0154 AR: 0x0150 IR: push 1028   TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    173 | 0x0150 exec 1 | PC: 0x0154 AR: 0x0150 IR: push 1028   TOS: 1028 NOS: -2 SP: 2 RSP: 2 IE: 0 INT: 0 ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    174 | 0x0154 fetch  | PC: 0x0154 AR: 0x0154 IR: push 1028   TOS: 1028 NOS: -2 SP: 2 RSP: 2 IE: 0 INT: 0 ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    175 | 0x0154 read   | PC: 0x0158 AR: 0x0154 IR: store       TOS: 1028 NOS: -2 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0154: hit set 5 way 0 ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    176 | 0x0154 exec 1 | PC: 0x0158 AR: 0x0404 IR: store       TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    177 | 0x0154 exec 2 | PC: 0x0158 AR: 0x0404 IR: store       TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem write 0x0404: hit set 0 way 1 ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    178 | 0x0154 exec 3 | PC: 0x0158 AR: 0x0404 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 25: fn show(n) {
+  DEBUG   machine:log           TICK:    179 | 0x0158 fetch  | PC: 0x0158 AR: 0x0158 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    180 | 0x0158 read   | PC: 0x015C AR: 0x0158 IR: push 1028   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | mem read 0x0158: hit set 5 way 0 ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    181 | 0x0158 exec 1 | PC: 0x015C AR: 0x0158 IR: push 1028   TOS: 1028 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    182 | 0x015C fetch  | PC: 0x015C AR: 0x015C IR: push 1028   TOS: 1028 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    183 | 0x015C read   | PC: 0x0160 AR: 0x015C IR: load        TOS: 1028 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x015C: hit set 5 way 0 ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    184 | 0x015C exec 1 | PC: 0x0160 AR: 0x0404 IR: load        TOS: 1028 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    185 | 0x015C exec 2 | PC: 0x0160 AR: 0x0404 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x0404: hit set 0 way 1 ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    186 | 0x0160 fetch  | PC: 0x0160 AR: 0x0160 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    187 | 0x0160 read   | PC: 0x0160 AR: 0x0160 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x0160: miss set 6 way 0, fill 0x0160, wait memory (10 left) ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    188 | 0x0160 read   | PC: 0x0160 AR: 0x0160 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (9 left) ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    189 | 0x0160 read   | PC: 0x0160 AR: 0x0160 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (8 left) ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    190 | 0x0160 read   | PC: 0x0160 AR: 0x0160 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (7 left) ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    191 | 0x0160 read   | PC: 0x0160 AR: 0x0160 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (6 left) ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    192 | 0x0160 read   | PC: 0x0160 AR: 0x0160 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (5 left) ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    193 | 0x0160 read   | PC: 0x0160 AR: 0x0160 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (4 left) ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    194 | 0x0160 read   | PC: 0x0160 AR: 0x0160 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (3 left) ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    195 | 0x0160 read   | PC: 0x0160 AR: 0x0160 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (2 left) ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    196 | 0x0160 read   | PC: 0x0160 AR: 0x0160 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (1 left) ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    197 | 0x0160 read   | PC: 0x0164 AR: 0x0160 IR: call 0x0010 TOS: -2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    198 | 0x0160 exec 1 | PC: 0x0010 AR: 0x0160 IR: call 0x0010 TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 26: print_int(n);
+  DEBUG   machine:log           TICK:    199 | 0x0010 fetch  | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    200 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | mem read 0x0010: miss set 1 way 0, fill 0x0010, wait memory (10 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    201 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (9 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    202 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (8 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    203 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (7 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    204 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (6 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    205 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (5 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    206 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (4 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    207 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (3 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    208 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (2 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    209 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (1 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    210 | 0x0010 read   | PC: 0x0014 AR: 0x0010 IR: push 980    TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    211 | 0x0010 exec 1 | PC: 0x0014 AR: 0x0010 IR: push 980    TOS: 980 NOS: -2 SP: 2 RSP: 3 IE: 0 INT: 0 ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    212 | 0x0014 fetch  | PC: 0x0014 AR: 0x0014 IR: push 980    TOS: 980 NOS: -2 SP: 2 RSP: 3 IE: 0 INT: 0 ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    213 | 0x0014 read   | PC: 0x0018 AR: 0x0014 IR: store       TOS: 980 NOS: -2 SP: 2 RSP: 3 IE: 0 INT: 0 | mem read 0x0014: hit set 1 way 0 ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    214 | 0x0014 exec 1 | PC: 0x0018 AR: 0x03D4 IR: store       TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    215 | 0x0014 exec 2 | PC: 0x0018 AR: 0x03D4 IR: store       TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | mem write 0x03D4: miss set 13 way 1, fill 0x03D0, wait memory (10 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    216 | 0x0014 exec 2 | PC: 0x0018 AR: 0x03D4 IR: store       TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (9 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    217 | 0x0014 exec 2 | PC: 0x0018 AR: 0x03D4 IR: store       TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (8 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    218 | 0x0014 exec 2 | PC: 0x0018 AR: 0x03D4 IR: store       TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (7 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    219 | 0x0014 exec 2 | PC: 0x0018 AR: 0x03D4 IR: store       TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (6 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    220 | 0x0014 exec 2 | PC: 0x0018 AR: 0x03D4 IR: store       TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (5 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    221 | 0x0014 exec 2 | PC: 0x0018 AR: 0x03D4 IR: store       TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (4 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    222 | 0x0014 exec 2 | PC: 0x0018 AR: 0x03D4 IR: store       TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (3 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    223 | 0x0014 exec 2 | PC: 0x0018 AR: 0x03D4 IR: store       TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (2 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    224 | 0x0014 exec 2 | PC: 0x0018 AR: 0x03D4 IR: store       TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (1 left) ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    225 | 0x0014 exec 2 | PC: 0x0018 AR: 0x03D4 IR: store       TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    226 | 0x0014 exec 3 | PC: 0x0018 AR: 0x03D4 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 ; 5: fn print_int(n) {
+  DEBUG   machine:log           TICK:    227 | 0x0018 fetch  | PC: 0x0018 AR: 0x0018 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    228 | 0x0018 read   | PC: 0x001C AR: 0x0018 IR: push 980    TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 | mem read 0x0018: hit set 1 way 0 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    229 | 0x0018 exec 1 | PC: 0x001C AR: 0x0018 IR: push 980    TOS: 980 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    230 | 0x001C fetch  | PC: 0x001C AR: 0x001C IR: push 980    TOS: 980 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    231 | 0x001C read   | PC: 0x0020 AR: 0x001C IR: load        TOS: 980 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | mem read 0x001C: hit set 1 way 0 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    232 | 0x001C exec 1 | PC: 0x0020 AR: 0x03D4 IR: load        TOS: 980 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    233 | 0x001C exec 2 | PC: 0x0020 AR: 0x03D4 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | mem read 0x03D4: hit set 13 way 1 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    234 | 0x0020 fetch  | PC: 0x0020 AR: 0x0020 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    235 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | mem read 0x0020: miss set 2 way 0, fill 0x0020, wait memory (10 left) ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    236 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (9 left) ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    237 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (8 left) ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    238 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (7 left) ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    239 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (6 left) ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    240 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (5 left) ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    241 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (4 left) ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    242 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (3 left) ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    243 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (2 left) ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    244 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: load        TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (1 left) ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    245 | 0x0020 read   | PC: 0x0024 AR: 0x0020 IR: push 0      TOS: -2 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    246 | 0x0020 exec 1 | PC: 0x0024 AR: 0x0020 IR: push 0      TOS: 0 NOS: -2 SP: 2 RSP: 3 IE: 0 INT: 0 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    247 | 0x0024 fetch  | PC: 0x0024 AR: 0x0024 IR: push 0      TOS: 0 NOS: -2 SP: 2 RSP: 3 IE: 0 INT: 0 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    248 | 0x0024 read   | PC: 0x0028 AR: 0x0024 IR: lt          TOS: 0 NOS: -2 SP: 2 RSP: 3 IE: 0 INT: 0 | mem read 0x0024: hit set 2 way 0 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    249 | 0x0024 exec 1 | PC: 0x0028 AR: 0x0024 IR: lt          TOS: 1 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    250 | 0x0028 fetch  | PC: 0x0028 AR: 0x0028 IR: lt          TOS: 1 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    251 | 0x0028 read   | PC: 0x002C AR: 0x0028 IR: jz 0x0038   TOS: 1 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | mem read 0x0028: hit set 2 way 0 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    252 | 0x0028 exec 1 | PC: 0x002C AR: 0x0028 IR: jz 0x0038   TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 ; 7: if (n < 0) {
+  DEBUG   machine:log           TICK:    253 | 0x002C fetch  | PC: 0x002C AR: 0x002C IR: jz 0x0038   TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    254 | 0x002C read   | PC: 0x0030 AR: 0x002C IR: push 45     TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 | mem read 0x002C: hit set 2 way 0 ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    255 | 0x002C exec 1 | PC: 0x0030 AR: 0x002C IR: push 45     TOS: 45 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    256 | 0x0030 fetch  | PC: 0x0030 AR: 0x0030 IR: push 45     TOS: 45 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    257 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 45     TOS: 45 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | mem read 0x0030: miss set 3 way 0, fill 0x0030, wait memory (10 left) ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    258 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 45     TOS: 45 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (9 left) ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    259 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 45     TOS: 45 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (8 left) ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    260 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 45     TOS: 45 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (7 left) ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    261 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 45     TOS: 45 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (6 left) ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    262 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 45     TOS: 45 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (5 left) ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    263 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 45     TOS: 45 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (4 left) ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    264 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 45     TOS: 45 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (3 left) ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    265 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 45     TOS: 45 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (2 left) ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    266 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 45     TOS: 45 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (1 left) ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    267 | 0x0030 read   | PC: 0x0034 AR: 0x0030 IR: out 1       TOS: 45 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    268 | 0x0030 exec 1 | PC: 0x0034 AR: 0x0030 IR: out 1       TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 | out '-' ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    269 | 0x0034 fetch  | PC: 0x0034 AR: 0x0034 IR: out 1       TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    270 | 0x0034 read   | PC: 0x0038 AR: 0x0034 IR: jmp 0x004C  TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 | mem read 0x0034: hit set 3 way 0 ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    271 | 0x0034 exec 1 | PC: 0x004C AR: 0x0034 IR: jmp 0x004C  TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 ; 8: out(1, '-');
+  DEBUG   machine:log           TICK:    272 | 0x004C fetch  | PC: 0x004C AR: 0x004C IR: jmp 0x004C  TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    273 | 0x004C read   | PC: 0x004C AR: 0x004C IR: jmp 0x004C  TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 | mem read 0x004C: miss set 4 way 0, fill 0x0040, wait memory (10 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    274 | 0x004C read   | PC: 0x004C AR: 0x004C IR: jmp 0x004C  TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 | wait memory (9 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    275 | 0x004C read   | PC: 0x004C AR: 0x004C IR: jmp 0x004C  TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 | wait memory (8 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    276 | 0x004C read   | PC: 0x004C AR: 0x004C IR: jmp 0x004C  TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 | wait memory (7 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    277 | 0x004C read   | PC: 0x004C AR: 0x004C IR: jmp 0x004C  TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 | wait memory (6 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    278 | 0x004C read   | PC: 0x004C AR: 0x004C IR: jmp 0x004C  TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 | wait memory (5 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    279 | 0x004C read   | PC: 0x004C AR: 0x004C IR: jmp 0x004C  TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 | wait memory (4 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    280 | 0x004C read   | PC: 0x004C AR: 0x004C IR: jmp 0x004C  TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 | wait memory (3 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    281 | 0x004C read   | PC: 0x004C AR: 0x004C IR: jmp 0x004C  TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 | wait memory (2 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    282 | 0x004C read   | PC: 0x004C AR: 0x004C IR: jmp 0x004C  TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 | wait memory (1 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    283 | 0x004C read   | PC: 0x0050 AR: 0x004C IR: push 0      TOS: 0 NOS: 0 SP: 0 RSP: 3 IE: 0 INT: 0 ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    284 | 0x004C exec 1 | PC: 0x0050 AR: 0x004C IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    285 | 0x0050 fetch  | PC: 0x0050 AR: 0x0050 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    286 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | mem read 0x0050: miss set 5 way 1, fill 0x0050, wait memory (10 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    287 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (9 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    288 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (8 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    289 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (7 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    290 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (6 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    291 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (5 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    292 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (4 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    293 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (3 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    294 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (2 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    295 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 | wait memory (1 left) ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    296 | 0x0050 read   | PC: 0x0054 AR: 0x0050 IR: push 1024   TOS: 0 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    297 | 0x0050 exec 1 | PC: 0x0054 AR: 0x0050 IR: push 1024   TOS: 1024 NOS: 0 SP: 2 RSP: 3 IE: 0 INT: 0 ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    298 | 0x0054 fetch  | PC: 0x0054 AR: 0x0054 IR: push 1024   TOS: 1024 NOS: 0 SP: 2 RSP: 3 IE: 0 INT: 0 ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    299 | 0x0054 read   | PC: 0x0058 AR: 0x0054 IR: store       TOS: 1024 NOS: 0 SP: 2 RSP: 3 IE: 0 INT: 0 | mem read 0x0054: hit set 5 way 1 ; 13: let count = 0;
+  DEBUG   machine:log           TICK:    300 | 0x0054 exec 1 | PC: 0x0058 AR: 0x0400 IR: store       TOS: 0 NOS: 0 SP: 1 RSP: 3 IE: 0 INT: 0 ; 13: let count = 0;
+  DEBUG   machine:simulate      ... log truncated after 300 ticks
+out_no_cache: |
+  -2
+  -2
+  1
+  -1
+  -2147483648
+  15
+  305419896
+  -2147483648
+  12
+  -8
+  1
+  1
+  1
+  0
+  1
+  1
+
+  instructions: 3323 ticks: 47833
+out_stdout: |
+  source LoC: 54 code instr: 244 data words: 18
+  =====
+  -2
+  -2
+  1
+  -1
+  -2147483648
+  15
+  305419896
+  -2147483648
+  12
+  -8
+  1
+  1
+  1
+  0
+  1
+  1
+
+  instructions: 3323 ticks: 12248 cache: hits 3973 misses 122
+out_code_hex: |
+  0x0000 - 50000008 - jmp 0x0008 (.start)          ; reset vector
+  0x0004 - 72000000 - iret                         ; interrupt vector (no handler)
+  0x0008 - 520001A0 - call 0x01A0 (main)           ; start
+  0x000C - 01000000 - halt                         ; start
+  0x0010 - 100003D4 - push 0x03D4 (print_int.n)    ; 5: fn print_int(n) {
+  0x0014 - 21000000 - store                        ; 5: fn print_int(n) {
+  0x0018 - 100003D4 - push 0x03D4 (print_int.n)    ; 7: if (n < 0) {
+  0x001C - 20000000 - load                         ; 7: if (n < 0) {
+  0x0020 - 10000000 - push 0                       ; 7: if (n < 0) {
+  0x0024 - 3C000000 - lt                           ; 7: if (n < 0) {
+  0x0028 - 51000038 - jz 0x0038 (.else1)           ; 7: if (n < 0) {
+  0x002C - 1000002D - push 45                      ; 8: out(1, '-');
+  0x0030 - 61000001 - out 1                        ; 8: out(1, '-');
+  0x0034 - 5000004C - jmp 0x004C (.endif2)         ; 8: out(1, '-');
+  0x0038 - 100003D4 - push 0x03D4 (print_int.n)    ; 10: n = -n;
+  0x003C - 20000000 - load                         ; 10: n = -n;
+  0x0040 - 40000000 - neg                          ; 10: n = -n;
+  0x0044 - 100003D4 - push 0x03D4 (print_int.n)    ; 10: n = -n;
+  0x0048 - 21000000 - store                        ; 10: n = -n;
+  0x004C - 10000000 - push 0                       ; 13: let count = 0;
+  0x0050 - 10000400 - push 0x0400 (print_int.count) ; 13: let count = 0;
+  0x0054 - 21000000 - store                        ; 13: let count = 0;
+  0x0058 - 10000400 - push 0x0400 (print_int.count) ; 14: while (count == 0 || n != 0) {
+  0x005C - 20000000 - load                         ; 14: while (count == 0 || n != 0) {
+  0x0060 - 10000000 - push 0                       ; 14: while (count == 0 || n != 0) {
+  0x0064 - 3A000000 - eq                           ; 14: while (count == 0 || n != 0) {
+  0x0068 - 51000074 - jz 0x0074 (.short5)          ; 14: while (count == 0 || n != 0) {
+  0x006C - 10000001 - push 1                       ; 14: while (count == 0 || n != 0) {
+  0x0070 - 5000008C - jmp 0x008C (.endlogic6)      ; 14: while (count == 0 || n != 0) {
+  0x0074 - 100003D4 - push 0x03D4 (print_int.n)    ; 14: while (count == 0 || n != 0) {
+  0x0078 - 20000000 - load                         ; 14: while (count == 0 || n != 0) {
+  0x007C - 10000000 - push 0                       ; 14: while (count == 0 || n != 0) {
+  0x0080 - 3B000000 - ne                           ; 14: while (count == 0 || n != 0) {
+  0x0084 - 10000000 - push 0                       ; 14: while (count == 0 || n != 0) {
+  0x0088 - 3B000000 - ne                           ; 14: while (count == 0 || n != 0) {
+  0x008C - 510000F8 - jz 0x00F8 (.endwhile4)       ; 14: while (count == 0 || n != 0) {
+  0x0090 - 10000030 - push 48                      ; 15: digits[count] = '0' - n % 10;
+  0x0094 - 100003D4 - push 0x03D4 (print_int.n)    ; 15: digits[count] = '0' - n % 10;
+  0x0098 - 20000000 - load                         ; 15: digits[count] = '0' - n % 10;
+  0x009C - 1000000A - push 10                      ; 15: digits[count] = '0' - n % 10;
+  0x00A0 - 34000000 - mod                          ; 15: digits[count] = '0' - n % 10;
+  0x00A4 - 31000000 - sub                          ; 15: digits[count] = '0' - n % 10;
+  0x00A8 - 100003D8 - push 0x03D8 (print_int.digits) ; 15: digits[count] = '0' - n % 10;
+  0x00AC - 10000400 - push 0x0400 (print_int.count) ; 15: digits[count] = '0' - n % 10;
+  0x00B0 - 20000000 - load                         ; 15: digits[count] = '0' - n % 10;
+  0x00B4 - 10000002 - push 2                       ; 15: digits[count] = '0' - n % 10;
+  0x00B8 - 38000000 - shl                          ; 15: digits[count] = '0' - n % 10;
+  0x00BC - 30000000 - add                          ; 15: digits[count] = '0' - n % 10;
+  0x00C0 - 21000000 - store                        ; 15: digits[count] = '0' - n % 10;
+  0x00C4 - 100003D4 - push 0x03D4 (print_int.n)    ; 16: n = n / 10;
+  0x00C8 - 20000000 - load                         ; 16: n = n / 10;
+  0x00CC - 1000000A - push 10                      ; 16: n = n / 10;
+  0x00D0 - 33000000 - div                          ; 16: n = n / 10;
+  0x00D4 - 100003D4 - push 0x03D4 (print_int.n)    ; 16: n = n / 10;
+  0x00D8 - 21000000 - store                        ; 16: n = n / 10;
+  0x00DC - 10000400 - push 0x0400 (print_int.count) ; 17: count = count + 1;
+  0x00E0 - 20000000 - load                         ; 17: count = count + 1;
+  0x00E4 - 10000001 - push 1                       ; 17: count = count + 1;
+  0x00E8 - 30000000 - add                          ; 17: count = count + 1;
+  0x00EC - 10000400 - push 0x0400 (print_int.count) ; 17: count = count + 1;
+  0x00F0 - 21000000 - store                        ; 17: count = count + 1;
+  0x00F4 - 50000058 - jmp 0x0058 (.while3)         ; 17: count = count + 1;
+  0x00F8 - 10000400 - push 0x0400 (print_int.count) ; 19: while (count > 0) {
+  0x00FC - 20000000 - load                         ; 19: while (count > 0) {
+  0x0100 - 10000000 - push 0                       ; 19: while (count > 0) {
+  0x0104 - 3E000000 - gt                           ; 19: while (count > 0) {
+  0x0108 - 51000148 - jz 0x0148 (.endwhile8)       ; 19: while (count > 0) {
+  0x010C - 10000400 - push 0x0400 (print_int.count) ; 20: count = count - 1;
+  0x0110 - 20000000 - load                         ; 20: count = count - 1;
+  0x0114 - 10000001 - push 1                       ; 20: count = count - 1;
+  0x0118 - 31000000 - sub                          ; 20: count = count - 1;
+  0x011C - 10000400 - push 0x0400 (print_int.count) ; 20: count = count - 1;
+  0x0120 - 21000000 - store                        ; 20: count = count - 1;
+  0x0124 - 100003D8 - push 0x03D8 (print_int.digits) ; 21: out(1, digits[count]);
+  0x0128 - 10000400 - push 0x0400 (print_int.count) ; 21: out(1, digits[count]);
+  0x012C - 20000000 - load                         ; 21: out(1, digits[count]);
+  0x0130 - 10000002 - push 2                       ; 21: out(1, digits[count]);
+  0x0134 - 38000000 - shl                          ; 21: out(1, digits[count]);
+  0x0138 - 30000000 - add                          ; 21: out(1, digits[count]);
+  0x013C - 20000000 - load                         ; 21: out(1, digits[count]);
+  0x0140 - 61000001 - out 1                        ; 21: out(1, digits[count]);
+  0x0144 - 500000F8 - jmp 0x00F8 (.while7)         ; 21: out(1, digits[count]);
+  0x0148 - 10000000 - push 0                       ; end of print_int: implicit return 0
+  0x014C - 53000000 - ret                          ; end of print_int
+  0x0150 - 10000404 - push 0x0404 (show.n)         ; 25: fn show(n) {
+  0x0154 - 21000000 - store                        ; 25: fn show(n) {
+  0x0158 - 10000404 - push 0x0404 (show.n)         ; 26: print_int(n);
+  0x015C - 20000000 - load                         ; 26: print_int(n);
+  0x0160 - 52000010 - call 0x0010 (print_int)      ; 26: print_int(n);
+  0x0164 - 12000000 - drop                         ; 26: print_int(n);
+  0x0168 - 1000000A - push 10                      ; 27: out(1, '\n');
+  0x016C - 61000001 - out 1                        ; 27: out(1, '\n');
+  0x0170 - 10000000 - push 0                       ; end of show: implicit return 0
+  0x0174 - 53000000 - ret                          ; end of show
+  0x0178 - 100003D0 - push 0x03D0 (calls)          ; 31: calls = calls + 1;
+  0x017C - 20000000 - load                         ; 31: calls = calls + 1;
+  0x0180 - 10000001 - push 1                       ; 31: calls = calls + 1;
+  0x0184 - 30000000 - add                          ; 31: calls = calls + 1;
+  0x0188 - 100003D0 - push 0x03D0 (calls)          ; 31: calls = calls + 1;
+  0x018C - 21000000 - store                        ; 31: calls = calls + 1;
+  0x0190 - 10000001 - push 1                       ; 32: return 1;
+  0x0194 - 53000000 - ret                          ; 32: return 1;
+  0x0198 - 10000000 - push 0                       ; end of touch: implicit return 0
+  0x019C - 53000000 - ret                          ; end of touch
+  0x01A0 - 10000007 - push 7                       ; 36: let a = 7;
+  0x01A4 - 10000408 - push 0x0408 (main.a)         ; 36: let a = 7;
+  0x01A8 - 21000000 - store                        ; 36: let a = 7;
+  0x01AC - 10FFFFFD - push -3                      ; 37: let b = -3;
+  0x01B0 - 1000040C - push 0x040C (main.b)         ; 37: let b = -3;
+  0x01B4 - 21000000 - store                        ; 37: let b = -3;
+  0x01B8 - 10000408 - push 0x0408 (main.a)         ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01BC - 20000000 - load                         ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01C0 - 1000040C - push 0x040C (main.b)         ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01C4 - 20000000 - load                         ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01C8 - 10000002 - push 2                       ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01CC - 32000000 - mul                          ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01D0 - 30000000 - add                          ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01D4 - 10000408 - push 0x0408 (main.a)         ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01D8 - 20000000 - load                         ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01DC - 1000040C - push 0x040C (main.b)         ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01E0 - 20000000 - load                         ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01E4 - 31000000 - sub                          ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01E8 - 10000003 - push 3                       ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01EC - 33000000 - div                          ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01F0 - 31000000 - sub                          ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01F4 - 52000150 - call 0x0150 (show)           ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01F8 - 12000000 - drop                         ; 38: show(a + b * 2 - (a - b) / 3);
+  0x01FC - 10000408 - push 0x0408 (main.a)         ; 39: show(a / b);
+  0x0200 - 20000000 - load                         ; 39: show(a / b);
+  0x0204 - 1000040C - push 0x040C (main.b)         ; 39: show(a / b);
+  0x0208 - 20000000 - load                         ; 39: show(a / b);
+  0x020C - 33000000 - div                          ; 39: show(a / b);
+  0x0210 - 52000150 - call 0x0150 (show)           ; 39: show(a / b);
+  0x0214 - 12000000 - drop                         ; 39: show(a / b);
+  0x0218 - 10000408 - push 0x0408 (main.a)         ; 40: show(a % b);
+  0x021C - 20000000 - load                         ; 40: show(a % b);
+  0x0220 - 1000040C - push 0x040C (main.b)         ; 40: show(a % b);
+  0x0224 - 20000000 - load                         ; 40: show(a % b);
+  0x0228 - 34000000 - mod                          ; 40: show(a % b);
+  0x022C - 52000150 - call 0x0150 (show)           ; 40: show(a % b);
+  0x0230 - 12000000 - drop                         ; 40: show(a % b);
+  0x0234 - 10000408 - push 0x0408 (main.a)         ; 41: show(-a % 3);
+  0x0238 - 20000000 - load                         ; 41: show(-a % 3);
+  0x023C - 40000000 - neg                          ; 41: show(-a % 3);
+  0x0240 - 10000003 - push 3                       ; 41: show(-a % 3);
+  0x0244 - 34000000 - mod                          ; 41: show(-a % 3);
+  0x0248 - 52000150 - call 0x0150 (show)           ; 41: show(-a % 3);
+  0x024C - 12000000 - drop                         ; 41: show(-a % 3);
+  0x0250 - 10000001 - push 1                       ; 42: show(1 << 31);
+  0x0254 - 1000001F - push 31                      ; 42: show(1 << 31);
+  0x0258 - 38000000 - shl                          ; 42: show(1 << 31);
+  0x025C - 52000150 - call 0x0150 (show)           ; 42: show(1 << 31);
+  0x0260 - 12000000 - drop                         ; 42: show(1 << 31);
+  0x0264 - 10FFFFFF - push -1                      ; 43: show(-1 >> 28);
+  0x0268 - 1000001C - push 28                      ; 43: show(-1 >> 28);
+  0x026C - 39000000 - shr                          ; 43: show(-1 >> 28);
+  0x0270 - 52000150 - call 0x0150 (show)           ; 43: show(-1 >> 28);
+  0x0274 - 12000000 - drop                         ; 43: show(-1 >> 28);
+  0x0278 - 10000410 - push 0x0410 (.lit0)          ; 44: show(0x12345678);
+  0x027C - 20000000 - load                         ; 44: show(0x12345678);
+  0x0280 - 52000150 - call 0x0150 (show)           ; 44: show(0x12345678);
+  0x0284 - 12000000 - drop                         ; 44: show(0x12345678);
+  0x0288 - 10000414 - push 0x0414 (.lit1)          ; 45: show(2147483647 + 1);
+  0x028C - 20000000 - load                         ; 45: show(2147483647 + 1);
+  0x0290 - 10000001 - push 1                       ; 45: show(2147483647 + 1);
+  0x0294 - 30000000 - add                          ; 45: show(2147483647 + 1);
+  0x0298 - 52000150 - call 0x0150 (show)           ; 45: show(2147483647 + 1);
+  0x029C - 12000000 - drop                         ; 45: show(2147483647 + 1);
+  0x02A0 - 10000408 - push 0x0408 (main.a)         ; 46: show((a & 5 | 8) ^ 1);
+  0x02A4 - 20000000 - load                         ; 46: show((a & 5 | 8) ^ 1);
+  0x02A8 - 10000005 - push 5                       ; 46: show((a & 5 | 8) ^ 1);
+  0x02AC - 35000000 - and                          ; 46: show((a & 5 | 8) ^ 1);
+  0x02B0 - 10000008 - push 8                       ; 46: show((a & 5 | 8) ^ 1);
+  0x02B4 - 36000000 - or                           ; 46: show((a & 5 | 8) ^ 1);
+  0x02B8 - 10000001 - push 1                       ; 46: show((a & 5 | 8) ^ 1);
+  0x02BC - 37000000 - xor                          ; 46: show((a & 5 | 8) ^ 1);
+  0x02C0 - 52000150 - call 0x0150 (show)           ; 46: show((a & 5 | 8) ^ 1);
+  0x02C4 - 12000000 - drop                         ; 46: show((a & 5 | 8) ^ 1);
+  0x02C8 - 10000408 - push 0x0408 (main.a)         ; 47: show(~a);
+  0x02CC - 20000000 - load                         ; 47: show(~a);
+  0x02D0 - 41000000 - not                          ; 47: show(~a);
+  0x02D4 - 52000150 - call 0x0150 (show)           ; 47: show(~a);
+  0x02D8 - 12000000 - drop                         ; 47: show(~a);
+  0x02DC - 10000408 - push 0x0408 (main.a)         ; 48: show(!a + !0);
+  0x02E0 - 20000000 - load                         ; 48: show(!a + !0);
+  0x02E4 - 10000000 - push 0                       ; 48: show(!a + !0);
+  0x02E8 - 3A000000 - eq                           ; 48: show(!a + !0);
+  0x02EC - 10000000 - push 0                       ; 48: show(!a + !0);
+  0x02F0 - 10000000 - push 0                       ; 48: show(!a + !0);
+  0x02F4 - 3A000000 - eq                           ; 48: show(!a + !0);
+  0x02F8 - 30000000 - add                          ; 48: show(!a + !0);
+  0x02FC - 52000150 - call 0x0150 (show)           ; 48: show(!a + !0);
+  0x0300 - 12000000 - drop                         ; 48: show(!a + !0);
+  0x0304 - 10000408 - push 0x0408 (main.a)         ; 49: show(a > b == 1);
+  0x0308 - 20000000 - load                         ; 49: show(a > b == 1);
+  0x030C - 1000040C - push 0x040C (main.b)         ; 49: show(a > b == 1);
+  0x0310 - 20000000 - load                         ; 49: show(a > b == 1);
+  0x0314 - 3E000000 - gt                           ; 49: show(a > b == 1);
+  0x0318 - 10000001 - push 1                       ; 49: show(a > b == 1);
+  0x031C - 3A000000 - eq                           ; 49: show(a > b == 1);
+  0x0320 - 52000150 - call 0x0150 (show)           ; 49: show(a > b == 1);
+  0x0324 - 12000000 - drop                         ; 49: show(a > b == 1);
+  0x0328 - 1000040C - push 0x040C (main.b)         ; 50: show(b < 0 || touch());
+  0x032C - 20000000 - load                         ; 50: show(b < 0 || touch());
+  0x0330 - 10000000 - push 0                       ; 50: show(b < 0 || touch());
+  0x0334 - 3C000000 - lt                           ; 50: show(b < 0 || touch());
+  0x0338 - 51000344 - jz 0x0344 (.short9)          ; 50: show(b < 0 || touch());
+  0x033C - 10000001 - push 1                       ; 50: show(b < 0 || touch());
+  0x0340 - 50000350 - jmp 0x0350 (.endlogic10)     ; 50: show(b < 0 || touch());
+  0x0344 - 52000178 - call 0x0178 (touch)          ; 50: show(b < 0 || touch());
+  0x0348 - 10000000 - push 0                       ; 50: show(b < 0 || touch());
+  0x034C - 3B000000 - ne                           ; 50: show(b < 0 || touch());
+  0x0350 - 52000150 - call 0x0150 (show)           ; 50: show(b < 0 || touch());
+  0x0354 - 12000000 - drop                         ; 50: show(b < 0 || touch());
+  0x0358 - 10000408 - push 0x0408 (main.a)         ; 51: show(a < 0 && touch());
+  0x035C - 20000000 - load                         ; 51: show(a < 0 && touch());
+  0x0360 - 10000000 - push 0                       ; 51: show(a < 0 && touch());
+  0x0364 - 3C000000 - lt                           ; 51: show(a < 0 && touch());
+  0x0368 - 5100037C - jz 0x037C (.short11)         ; 51: show(a < 0 && touch());
+  0x036C - 52000178 - call 0x0178 (touch)          ; 51: show(a < 0 && touch());
+  0x0370 - 5100037C - jz 0x037C (.short11)         ; 51: show(a < 0 && touch());
+  0x0374 - 10000001 - push 1                       ; 51: show(a < 0 && touch());
+  0x0378 - 50000380 - jmp 0x0380 (.endlogic12)     ; 51: show(a < 0 && touch());
+  0x037C - 10000000 - push 0                       ; 51: show(a < 0 && touch());
+  0x0380 - 52000150 - call 0x0150 (show)           ; 51: show(a < 0 && touch());
+  0x0384 - 12000000 - drop                         ; 51: show(a < 0 && touch());
+  0x0388 - 10000408 - push 0x0408 (main.a)         ; 52: show(a > 0 && touch());
+  0x038C - 20000000 - load                         ; 52: show(a > 0 && touch());
+  0x0390 - 10000000 - push 0                       ; 52: show(a > 0 && touch());
+  0x0394 - 3E000000 - gt                           ; 52: show(a > 0 && touch());
+  0x0398 - 510003AC - jz 0x03AC (.short13)         ; 52: show(a > 0 && touch());
+  0x039C - 52000178 - call 0x0178 (touch)          ; 52: show(a > 0 && touch());
+  0x03A0 - 510003AC - jz 0x03AC (.short13)         ; 52: show(a > 0 && touch());
+  0x03A4 - 10000001 - push 1                       ; 52: show(a > 0 && touch());
+  0x03A8 - 500003B0 - jmp 0x03B0 (.endlogic14)     ; 52: show(a > 0 && touch());
+  0x03AC - 10000000 - push 0                       ; 52: show(a > 0 && touch());
+  0x03B0 - 52000150 - call 0x0150 (show)           ; 52: show(a > 0 && touch());
+  0x03B4 - 12000000 - drop                         ; 52: show(a > 0 && touch());
+  0x03B8 - 100003D0 - push 0x03D0 (calls)          ; 53: show(calls);
+  0x03BC - 20000000 - load                         ; 53: show(calls);
+  0x03C0 - 52000150 - call 0x0150 (show)           ; 53: show(calls);
+  0x03C4 - 12000000 - drop                         ; 53: show(calls);
+  0x03C8 - 10000000 - push 0                       ; end of main: implicit return 0
+  0x03CC - 53000000 - ret                          ; end of main
+  0x03D0 - 00000000 - data                         ; calls: var
+  0x03D4 - 00000000 - data                         ; print_int.n: var
+  0x03D8 - 00000000 - data                         ; print_int.digits: array [10]
+  0x03DC - 00000000 - data                         ; print_int.digits+1
+  0x03E0 - 00000000 - data                         ; print_int.digits+2
+  0x03E4 - 00000000 - data                         ; print_int.digits+3
+  0x03E8 - 00000000 - data                         ; print_int.digits+4
+  0x03EC - 00000000 - data                         ; print_int.digits+5
+  0x03F0 - 00000000 - data                         ; print_int.digits+6
+  0x03F4 - 00000000 - data                         ; print_int.digits+7
+  0x03F8 - 00000000 - data                         ; print_int.digits+8
+  0x03FC - 00000000 - data                         ; print_int.digits+9
+  0x0400 - 00000000 - data                         ; print_int.count: var
+  0x0404 - 00000000 - data                         ; show.n: var
+  0x0408 - 00000000 - data                         ; main.a: var
+  0x040C - 00000000 - data                         ; main.b: var
+  0x0410 - 12345678 - data                         ; .lit0: literal 305419896
+  0x0414 - 7FFFFFFF - data                         ; .lit1: literal 2147483647
+out_code: |
+  50000008 72000000 520001A0 01000000 100003D4 21000000 100003D4 20000000
+  10000000 3C000000 51000038 1000002D 61000001 5000004C 100003D4 20000000
+  40000000 100003D4 21000000 10000000 10000400 21000000 10000400 20000000
+  10000000 3A000000 51000074 10000001 5000008C 100003D4 20000000 10000000
+  3B000000 10000000 3B000000 510000F8 10000030 100003D4 20000000 1000000A
+  34000000 31000000 100003D8 10000400 20000000 10000002 38000000 30000000
+  21000000 100003D4 20000000 1000000A 33000000 100003D4 21000000 10000400
+  20000000 10000001 30000000 10000400 21000000 50000058 10000400 20000000
+  10000000 3E000000 51000148 10000400 20000000 10000001 31000000 10000400
+  21000000 100003D8 10000400 20000000 10000002 38000000 30000000 20000000
+  61000001 500000F8 10000000 53000000 10000404 21000000 10000404 20000000
+  52000010 12000000 1000000A 61000001 10000000 53000000 100003D0 20000000
+  10000001 30000000 100003D0 21000000 10000001 53000000 10000000 53000000
+  10000007 10000408 21000000 10FFFFFD 1000040C 21000000 10000408 20000000
+  1000040C 20000000 10000002 32000000 30000000 10000408 20000000 1000040C
+  20000000 31000000 10000003 33000000 31000000 52000150 12000000 10000408
+  20000000 1000040C 20000000 33000000 52000150 12000000 10000408 20000000
+  1000040C 20000000 34000000 52000150 12000000 10000408 20000000 40000000
+  10000003 34000000 52000150 12000000 10000001 1000001F 38000000 52000150
+  12000000 10FFFFFF 1000001C 39000000 52000150 12000000 10000410 20000000
+  52000150 12000000 10000414 20000000 10000001 30000000 52000150 12000000
+  10000408 20000000 10000005 35000000 10000008 36000000 10000001 37000000
+  52000150 12000000 10000408 20000000 41000000 52000150 12000000 10000408
+  20000000 10000000 3A000000 10000000 10000000 3A000000 30000000 52000150
+  12000000 10000408 20000000 1000040C 20000000 3E000000 10000001 3A000000
+  52000150 12000000 1000040C 20000000 10000000 3C000000 51000344 10000001
+  50000350 52000178 10000000 3B000000 52000150 12000000 10000408 20000000
+  10000000 3C000000 5100037C 52000178 5100037C 10000001 50000380 10000000
+  52000150 12000000 10000408 20000000 10000000 3E000000 510003AC 52000178
+  510003AC 10000001 500003B0 10000000 52000150 12000000 100003D0 20000000
+  52000150 12000000 10000000 53000000 00000000 00000000 00000000 00000000
+  00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+  00000000 00000000 00000000 00000000 12345678 7FFFFFFF
+out_ast: |
+  let calls = 0
+  fn print_int(n)
+    let digits[10]
+    if (< n 0)
+      expr (call out 1 45)
+    else
+      set n = (- n)
+    let count = 0
+    while (|| (== count 0) (!= n 0))
+      set ([] digits count) = (- 48 (% n 10))
+      set n = (/ n 10)
+      set count = (+ count 1)
+    while (> count 0)
+      set count = (- count 1)
+      expr (call out 1 ([] digits count))
+  fn show(n)
+    expr (call print_int n)
+    expr (call out 1 10)
+  fn touch()
+    set calls = (+ calls 1)
+    return 1
+  fn main()
+    let a = 7
+    let b = -3
+    expr (call show (- (+ a (* b 2)) (/ (- a b) 3)))
+    expr (call show (/ a b))
+    expr (call show (% a b))
+    expr (call show (% (- a) 3))
+    expr (call show (<< 1 31))
+    expr (call show (>> -1 28))
+    expr (call show 305419896)
+    expr (call show (+ 2147483647 1))
+    expr (call show (^ (| (& a 5) 8) 1))
+    expr (call show (~ a))
+    expr (call show (+ (! a) (! 0)))
+    expr (call show (== (> a b) 1))
+    expr (call show (|| (< b 0) (call touch)))
+    expr (call show (&& (< a 0) (call touch)))
+    expr (call show (&& (> a 0) (call touch)))
+    expr (call show calls)

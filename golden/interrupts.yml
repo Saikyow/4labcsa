@@ -1,0 +1,727 @@
+in_source: |
+  // main считает и печатает метки, обработчик эхом печатает ввод в верхнем регистре.
+
+  let done = 0;
+  let received = 0;
+
+  interrupt on_input() {
+      let c = in(0);
+      if (c == 0) {
+          done = 1;
+          return;
+      }
+      if (c >= 'a' && c <= 'z') {
+          c = c - 'a' + 'A';
+      }
+      out(1, c);
+      received = received + 1;
+  }
+
+  fn print_str(s) {
+      let i = 1;
+      while (i <= s[0]) {
+          out(1, s[i]);
+          i = i + 1;
+      }
+  }
+
+  fn print_int(n) {
+      let digits[10];
+      if (n < 0) {
+          out(1, '-');
+      } else {
+          n = -n;
+      }
+      // Работаем с n <= 0, иначе -2147483648 не напечатать.
+      let count = 0;
+      while (count == 0 || n != 0) {
+          digits[count] = '0' - n % 10;
+          n = n / 10;
+          count = count + 1;
+      }
+      while (count > 0) {
+          count = count - 1;
+          out(1, digits[count]);
+      }
+  }
+
+  fn main() {
+      let loops = 0;
+      while (!done) {
+          loops = loops + 1;
+          if (loops % 10 == 0) {
+              // Иначе эхо обработчика вклинится в середину метки.
+              di();
+              print_str("<main>");
+              ei();
+          }
+      }
+      print_str("\nreceived: ");
+      print_int(received);
+      print_str("\nmain loop iterations: ");
+      print_int(loops);
+  }
+in_stdin: |
+  [
+      (60, 'h'), (200, 'e'), (1000, 'l'), (2000, 'l'), (3000, 'o'), (4000, 0),
+  ]
+out_log: |
+  DEBUG   machine:log           TICK:      1 | 0x0000 fetch  | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 ; reset vector
+  DEBUG   machine:log           TICK:      2 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | mem read 0x0000: miss set 0 way 0, fill 0x0000, wait memory (10 left) ; reset vector
+  DEBUG   machine:log           TICK:      3 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (9 left) ; reset vector
+  DEBUG   machine:log           TICK:      4 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (8 left) ; reset vector
+  DEBUG   machine:log           TICK:      5 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (7 left) ; reset vector
+  DEBUG   machine:log           TICK:      6 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (6 left) ; reset vector
+  DEBUG   machine:log           TICK:      7 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (5 left) ; reset vector
+  DEBUG   machine:log           TICK:      8 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (4 left) ; reset vector
+  DEBUG   machine:log           TICK:      9 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (3 left) ; reset vector
+  DEBUG   machine:log           TICK:     10 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (2 left) ; reset vector
+  DEBUG   machine:log           TICK:     11 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (1 left) ; reset vector
+  DEBUG   machine:log           TICK:     12 | 0x0000 read   | PC: 0x0004 AR: 0x0000 IR: jmp 0x0008  TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 ; reset vector
+  DEBUG   machine:log           TICK:     13 | 0x0000 exec 1 | PC: 0x0008 AR: 0x0000 IR: jmp 0x0008  TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 ; reset vector
+  DEBUG   machine:log           TICK:     14 | 0x0008 fetch  | PC: 0x0008 AR: 0x0008 IR: jmp 0x0008  TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 ; start: enable interrupts
+  DEBUG   machine:log           TICK:     15 | 0x0008 read   | PC: 0x000C AR: 0x0008 IR: ei          TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | mem read 0x0008: hit set 0 way 0 ; start: enable interrupts
+  DEBUG   machine:log           TICK:     16 | 0x0008 exec 1 | PC: 0x000C AR: 0x0008 IR: ei          TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 1 INT: 0 ; start: enable interrupts
+  DEBUG   machine:log           TICK:     17 | 0x000C fetch  | PC: 0x000C AR: 0x000C IR: ei          TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 1 INT: 0 ; start
+  DEBUG   machine:log           TICK:     18 | 0x000C read   | PC: 0x0010 AR: 0x000C IR: call 0x028C TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 1 INT: 0 | mem read 0x000C: hit set 0 way 0 ; start
+  DEBUG   machine:log           TICK:     19 | 0x000C exec 1 | PC: 0x028C AR: 0x000C IR: call 0x028C TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 1 INT: 0 ; start
+  DEBUG   machine:log           TICK:     20 | 0x028C fetch  | PC: 0x028C AR: 0x028C IR: call 0x028C TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 1 INT: 0 ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     21 | 0x028C read   | PC: 0x028C AR: 0x028C IR: call 0x028C TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 1 INT: 0 | mem read 0x028C: miss set 8 way 0, fill 0x0280, wait memory (10 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     22 | 0x028C read   | PC: 0x028C AR: 0x028C IR: call 0x028C TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 1 INT: 0 | wait memory (9 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     23 | 0x028C read   | PC: 0x028C AR: 0x028C IR: call 0x028C TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 1 INT: 0 | wait memory (8 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     24 | 0x028C read   | PC: 0x028C AR: 0x028C IR: call 0x028C TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 1 INT: 0 | wait memory (7 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     25 | 0x028C read   | PC: 0x028C AR: 0x028C IR: call 0x028C TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 1 INT: 0 | wait memory (6 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     26 | 0x028C read   | PC: 0x028C AR: 0x028C IR: call 0x028C TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 1 INT: 0 | wait memory (5 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     27 | 0x028C read   | PC: 0x028C AR: 0x028C IR: call 0x028C TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 1 INT: 0 | wait memory (4 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     28 | 0x028C read   | PC: 0x028C AR: 0x028C IR: call 0x028C TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 1 INT: 0 | wait memory (3 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     29 | 0x028C read   | PC: 0x028C AR: 0x028C IR: call 0x028C TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 1 INT: 0 | wait memory (2 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     30 | 0x028C read   | PC: 0x028C AR: 0x028C IR: call 0x028C TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 1 INT: 0 | wait memory (1 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     31 | 0x028C read   | PC: 0x0290 AR: 0x028C IR: push 0      TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 1 INT: 0 ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     32 | 0x028C exec 1 | PC: 0x0290 AR: 0x028C IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     33 | 0x0290 fetch  | PC: 0x0290 AR: 0x0290 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     34 | 0x0290 read   | PC: 0x0290 AR: 0x0290 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | mem read 0x0290: miss set 9 way 0, fill 0x0290, wait memory (10 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     35 | 0x0290 read   | PC: 0x0290 AR: 0x0290 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (9 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     36 | 0x0290 read   | PC: 0x0290 AR: 0x0290 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (8 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     37 | 0x0290 read   | PC: 0x0290 AR: 0x0290 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (7 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     38 | 0x0290 read   | PC: 0x0290 AR: 0x0290 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (6 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     39 | 0x0290 read   | PC: 0x0290 AR: 0x0290 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (5 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     40 | 0x0290 read   | PC: 0x0290 AR: 0x0290 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (4 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     41 | 0x0290 read   | PC: 0x0290 AR: 0x0290 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (3 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     42 | 0x0290 read   | PC: 0x0290 AR: 0x0290 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (2 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     43 | 0x0290 read   | PC: 0x0290 AR: 0x0290 IR: push 0      TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (1 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     44 | 0x0290 read   | PC: 0x0294 AR: 0x0290 IR: push 892    TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     45 | 0x0290 exec 1 | PC: 0x0294 AR: 0x0290 IR: push 892    TOS: 892 NOS: 0 SP: 2 RSP: 1 IE: 1 INT: 0 ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     46 | 0x0294 fetch  | PC: 0x0294 AR: 0x0294 IR: push 892    TOS: 892 NOS: 0 SP: 2 RSP: 1 IE: 1 INT: 0 ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     47 | 0x0294 read   | PC: 0x0298 AR: 0x0294 IR: store       TOS: 892 NOS: 0 SP: 2 RSP: 1 IE: 1 INT: 0 | mem read 0x0294: hit set 9 way 0 ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     48 | 0x0294 exec 1 | PC: 0x0298 AR: 0x037C IR: store       TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     49 | 0x0294 exec 2 | PC: 0x0298 AR: 0x037C IR: store       TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | mem write 0x037C: miss set 7 way 0, fill 0x0370, wait memory (10 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     50 | 0x0294 exec 2 | PC: 0x0298 AR: 0x037C IR: store       TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (9 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     51 | 0x0294 exec 2 | PC: 0x0298 AR: 0x037C IR: store       TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (8 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     52 | 0x0294 exec 2 | PC: 0x0298 AR: 0x037C IR: store       TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (7 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     53 | 0x0294 exec 2 | PC: 0x0298 AR: 0x037C IR: store       TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (6 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     54 | 0x0294 exec 2 | PC: 0x0298 AR: 0x037C IR: store       TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (5 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     55 | 0x0294 exec 2 | PC: 0x0298 AR: 0x037C IR: store       TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (4 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     56 | 0x0294 exec 2 | PC: 0x0298 AR: 0x037C IR: store       TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (3 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     57 | 0x0294 exec 2 | PC: 0x0298 AR: 0x037C IR: store       TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (2 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     58 | 0x0294 exec 2 | PC: 0x0298 AR: 0x037C IR: store       TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 | wait memory (1 left) ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     59 | 0x0294 exec 2 | PC: 0x0298 AR: 0x037C IR: store       TOS: 0 NOS: 0 SP: 1 RSP: 1 IE: 1 INT: 0 ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     60 | 0x0294 exec 3 | PC: 0x0298 AR: 0x037C IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 1 INT: 0 | input 'h' -> IRQ ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     61 | 0x0294 irq    | PC: 0x0004 AR: 0x037C IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 48: let loops = 0;
+  DEBUG   machine:log           TICK:     62 | 0x0004 fetch  | PC: 0x0004 AR: 0x0004 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; interrupt vector
+  DEBUG   machine:log           TICK:     63 | 0x0004 read   | PC: 0x0008 AR: 0x0004 IR: jmp 0x0014  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | mem read 0x0004: hit set 0 way 0 ; interrupt vector
+  DEBUG   machine:log           TICK:     64 | 0x0004 exec 1 | PC: 0x0014 AR: 0x0004 IR: jmp 0x0014  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; interrupt vector
+  DEBUG   machine:log           TICK:     65 | 0x0014 fetch  | PC: 0x0014 AR: 0x0014 IR: jmp 0x0014  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     66 | 0x0014 read   | PC: 0x0014 AR: 0x0014 IR: jmp 0x0014  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | mem read 0x0014: miss set 1 way 0, fill 0x0010, wait memory (10 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     67 | 0x0014 read   | PC: 0x0014 AR: 0x0014 IR: jmp 0x0014  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (9 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     68 | 0x0014 read   | PC: 0x0014 AR: 0x0014 IR: jmp 0x0014  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (8 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     69 | 0x0014 read   | PC: 0x0014 AR: 0x0014 IR: jmp 0x0014  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (7 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     70 | 0x0014 read   | PC: 0x0014 AR: 0x0014 IR: jmp 0x0014  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (6 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     71 | 0x0014 read   | PC: 0x0014 AR: 0x0014 IR: jmp 0x0014  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (5 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     72 | 0x0014 read   | PC: 0x0014 AR: 0x0014 IR: jmp 0x0014  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (4 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     73 | 0x0014 read   | PC: 0x0014 AR: 0x0014 IR: jmp 0x0014  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (3 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     74 | 0x0014 read   | PC: 0x0014 AR: 0x0014 IR: jmp 0x0014  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (2 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     75 | 0x0014 read   | PC: 0x0014 AR: 0x0014 IR: jmp 0x0014  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (1 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     76 | 0x0014 read   | PC: 0x0018 AR: 0x0014 IR: in 0        TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     77 | 0x0014 exec 1 | PC: 0x0018 AR: 0x0014 IR: in 0        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | in 'h' ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     78 | 0x0018 fetch  | PC: 0x0018 AR: 0x0018 IR: in 0        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     79 | 0x0018 read   | PC: 0x001C AR: 0x0018 IR: push 832    TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0018: hit set 1 way 0 ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     80 | 0x0018 exec 1 | PC: 0x001C AR: 0x0018 IR: push 832    TOS: 832 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     81 | 0x001C fetch  | PC: 0x001C AR: 0x001C IR: push 832    TOS: 832 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     82 | 0x001C read   | PC: 0x0020 AR: 0x001C IR: store       TOS: 832 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 | mem read 0x001C: hit set 1 way 0 ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     83 | 0x001C exec 1 | PC: 0x0020 AR: 0x0340 IR: store       TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     84 | 0x001C exec 2 | PC: 0x0020 AR: 0x0340 IR: store       TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem write 0x0340: miss set 4 way 0, fill 0x0340, wait memory (10 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     85 | 0x001C exec 2 | PC: 0x0020 AR: 0x0340 IR: store       TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (9 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     86 | 0x001C exec 2 | PC: 0x0020 AR: 0x0340 IR: store       TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (8 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     87 | 0x001C exec 2 | PC: 0x0020 AR: 0x0340 IR: store       TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (7 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     88 | 0x001C exec 2 | PC: 0x0020 AR: 0x0340 IR: store       TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (6 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     89 | 0x001C exec 2 | PC: 0x0020 AR: 0x0340 IR: store       TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (5 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     90 | 0x001C exec 2 | PC: 0x0020 AR: 0x0340 IR: store       TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (4 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     91 | 0x001C exec 2 | PC: 0x0020 AR: 0x0340 IR: store       TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (3 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     92 | 0x001C exec 2 | PC: 0x0020 AR: 0x0340 IR: store       TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (2 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     93 | 0x001C exec 2 | PC: 0x0020 AR: 0x0340 IR: store       TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (1 left) ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     94 | 0x001C exec 2 | PC: 0x0020 AR: 0x0340 IR: store       TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     95 | 0x001C exec 3 | PC: 0x0020 AR: 0x0340 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 7: let c = in(0);
+  DEBUG   machine:log           TICK:     96 | 0x0020 fetch  | PC: 0x0020 AR: 0x0020 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:     97 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | mem read 0x0020: miss set 2 way 0, fill 0x0020, wait memory (10 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:     98 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (9 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:     99 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (8 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    100 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (7 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    101 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (6 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    102 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (5 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    103 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (4 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    104 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (3 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    105 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (2 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    106 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (1 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    107 | 0x0020 read   | PC: 0x0024 AR: 0x0020 IR: push 832    TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    108 | 0x0020 exec 1 | PC: 0x0024 AR: 0x0020 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    109 | 0x0024 fetch  | PC: 0x0024 AR: 0x0024 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    110 | 0x0024 read   | PC: 0x0028 AR: 0x0024 IR: load        TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0024: hit set 2 way 0 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    111 | 0x0024 exec 1 | PC: 0x0028 AR: 0x0340 IR: load        TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    112 | 0x0024 exec 2 | PC: 0x0028 AR: 0x0340 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0340: hit set 4 way 0 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    113 | 0x0028 fetch  | PC: 0x0028 AR: 0x0028 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    114 | 0x0028 read   | PC: 0x002C AR: 0x0028 IR: push 0      TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0028: hit set 2 way 0 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    115 | 0x0028 exec 1 | PC: 0x002C AR: 0x0028 IR: push 0      TOS: 0 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    116 | 0x002C fetch  | PC: 0x002C AR: 0x002C IR: push 0      TOS: 0 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    117 | 0x002C read   | PC: 0x0030 AR: 0x002C IR: eq          TOS: 0 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 | mem read 0x002C: hit set 2 way 0 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    118 | 0x002C exec 1 | PC: 0x0030 AR: 0x002C IR: eq          TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    119 | 0x0030 fetch  | PC: 0x0030 AR: 0x0030 IR: eq          TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    120 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: eq          TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0030: miss set 3 way 0, fill 0x0030, wait memory (10 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    121 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: eq          TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (9 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    122 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: eq          TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (8 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    123 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: eq          TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (7 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    124 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: eq          TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (6 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    125 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: eq          TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (5 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    126 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: eq          TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (4 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    127 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: eq          TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (3 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    128 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: eq          TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (2 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    129 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: eq          TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (1 left) ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    130 | 0x0030 read   | PC: 0x0034 AR: 0x0030 IR: jz 0x0044   TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    131 | 0x0030 exec 1 | PC: 0x0044 AR: 0x0030 IR: jz 0x0044   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 8: if (c == 0) {
+  DEBUG   machine:log           TICK:    132 | 0x0044 fetch  | PC: 0x0044 AR: 0x0044 IR: jz 0x0044   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    133 | 0x0044 read   | PC: 0x0044 AR: 0x0044 IR: jz 0x0044   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | mem read 0x0044: miss set 4 way 1, fill 0x0040, wait memory (10 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    134 | 0x0044 read   | PC: 0x0044 AR: 0x0044 IR: jz 0x0044   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (9 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    135 | 0x0044 read   | PC: 0x0044 AR: 0x0044 IR: jz 0x0044   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (8 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    136 | 0x0044 read   | PC: 0x0044 AR: 0x0044 IR: jz 0x0044   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (7 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    137 | 0x0044 read   | PC: 0x0044 AR: 0x0044 IR: jz 0x0044   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (6 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    138 | 0x0044 read   | PC: 0x0044 AR: 0x0044 IR: jz 0x0044   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (5 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    139 | 0x0044 read   | PC: 0x0044 AR: 0x0044 IR: jz 0x0044   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (4 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    140 | 0x0044 read   | PC: 0x0044 AR: 0x0044 IR: jz 0x0044   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (3 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    141 | 0x0044 read   | PC: 0x0044 AR: 0x0044 IR: jz 0x0044   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (2 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    142 | 0x0044 read   | PC: 0x0044 AR: 0x0044 IR: jz 0x0044   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | wait memory (1 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    143 | 0x0044 read   | PC: 0x0048 AR: 0x0044 IR: push 832    TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    144 | 0x0044 exec 1 | PC: 0x0048 AR: 0x0044 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    145 | 0x0048 fetch  | PC: 0x0048 AR: 0x0048 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    146 | 0x0048 read   | PC: 0x004C AR: 0x0048 IR: load        TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0048: hit set 4 way 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    147 | 0x0048 exec 1 | PC: 0x004C AR: 0x0340 IR: load        TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    148 | 0x0048 exec 2 | PC: 0x004C AR: 0x0340 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0340: hit set 4 way 0 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    149 | 0x004C fetch  | PC: 0x004C AR: 0x004C IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    150 | 0x004C read   | PC: 0x0050 AR: 0x004C IR: push 97     TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x004C: hit set 4 way 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    151 | 0x004C exec 1 | PC: 0x0050 AR: 0x004C IR: push 97     TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    152 | 0x0050 fetch  | PC: 0x0050 AR: 0x0050 IR: push 97     TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    153 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 97     TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 | mem read 0x0050: miss set 5 way 0, fill 0x0050, wait memory (10 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    154 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 97     TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (9 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    155 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 97     TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (8 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    156 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 97     TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (7 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    157 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 97     TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (6 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    158 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 97     TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (5 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    159 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 97     TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (4 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    160 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 97     TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (3 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    161 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 97     TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (2 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    162 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: push 97     TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (1 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    163 | 0x0050 read   | PC: 0x0054 AR: 0x0050 IR: ge          TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    164 | 0x0050 exec 1 | PC: 0x0054 AR: 0x0050 IR: ge          TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    165 | 0x0054 fetch  | PC: 0x0054 AR: 0x0054 IR: ge          TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    166 | 0x0054 read   | PC: 0x0058 AR: 0x0054 IR: jz 0x0074   TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0054: hit set 5 way 0 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    167 | 0x0054 exec 1 | PC: 0x0058 AR: 0x0054 IR: jz 0x0074   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    168 | 0x0058 fetch  | PC: 0x0058 AR: 0x0058 IR: jz 0x0074   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    169 | 0x0058 read   | PC: 0x005C AR: 0x0058 IR: push 832    TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | mem read 0x0058: hit set 5 way 0 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    170 | 0x0058 exec 1 | PC: 0x005C AR: 0x0058 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    171 | 0x005C fetch  | PC: 0x005C AR: 0x005C IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    172 | 0x005C read   | PC: 0x0060 AR: 0x005C IR: load        TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x005C: hit set 5 way 0 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    173 | 0x005C exec 1 | PC: 0x0060 AR: 0x0340 IR: load        TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    174 | 0x005C exec 2 | PC: 0x0060 AR: 0x0340 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0340: hit set 4 way 0 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    175 | 0x0060 fetch  | PC: 0x0060 AR: 0x0060 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    176 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0060: miss set 6 way 0, fill 0x0060, wait memory (10 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    177 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (9 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    178 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (8 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    179 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (7 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    180 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (6 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    181 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (5 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    182 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (4 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    183 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (3 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    184 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (2 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    185 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (1 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    186 | 0x0060 read   | PC: 0x0064 AR: 0x0060 IR: push 122    TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    187 | 0x0060 exec 1 | PC: 0x0064 AR: 0x0060 IR: push 122    TOS: 122 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    188 | 0x0064 fetch  | PC: 0x0064 AR: 0x0064 IR: push 122    TOS: 122 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    189 | 0x0064 read   | PC: 0x0068 AR: 0x0064 IR: le          TOS: 122 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 | mem read 0x0064: hit set 6 way 0 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    190 | 0x0064 exec 1 | PC: 0x0068 AR: 0x0064 IR: le          TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    191 | 0x0068 fetch  | PC: 0x0068 AR: 0x0068 IR: le          TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    192 | 0x0068 read   | PC: 0x006C AR: 0x0068 IR: jz 0x0074   TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0068: hit set 6 way 0 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    193 | 0x0068 exec 1 | PC: 0x006C AR: 0x0068 IR: jz 0x0074   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    194 | 0x006C fetch  | PC: 0x006C AR: 0x006C IR: jz 0x0074   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    195 | 0x006C read   | PC: 0x0070 AR: 0x006C IR: push 1      TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | mem read 0x006C: hit set 6 way 0 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    196 | 0x006C exec 1 | PC: 0x0070 AR: 0x006C IR: push 1      TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    197 | 0x0070 fetch  | PC: 0x0070 AR: 0x0070 IR: push 1      TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    198 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: push 1      TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0070: miss set 7 way 1, fill 0x0070, wait memory (10 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    199 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: push 1      TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (9 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    200 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: push 1      TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | input 'e' -> IRQ, wait memory (8 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    201 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: push 1      TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (7 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    202 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: push 1      TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (6 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    203 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: push 1      TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (5 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    204 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: push 1      TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (4 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    205 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: push 1      TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (3 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    206 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: push 1      TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (2 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    207 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: push 1      TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (1 left) ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    208 | 0x0070 read   | PC: 0x0074 AR: 0x0070 IR: jmp 0x0078  TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    209 | 0x0070 exec 1 | PC: 0x0078 AR: 0x0070 IR: jmp 0x0078  TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    210 | 0x0078 fetch  | PC: 0x0078 AR: 0x0078 IR: jmp 0x0078  TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    211 | 0x0078 read   | PC: 0x007C AR: 0x0078 IR: jz 0x009C   TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0078: hit set 7 way 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    212 | 0x0078 exec 1 | PC: 0x007C AR: 0x0078 IR: jz 0x009C   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 12: if (c >= 'a' && c <= 'z') {
+  DEBUG   machine:log           TICK:    213 | 0x007C fetch  | PC: 0x007C AR: 0x007C IR: jz 0x009C   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    214 | 0x007C read   | PC: 0x0080 AR: 0x007C IR: push 832    TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | mem read 0x007C: hit set 7 way 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    215 | 0x007C exec 1 | PC: 0x0080 AR: 0x007C IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    216 | 0x0080 fetch  | PC: 0x0080 AR: 0x0080 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    217 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0080: miss set 8 way 1, fill 0x0080, wait memory (10 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    218 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (9 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    219 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (8 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    220 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (7 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    221 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (6 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    222 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (5 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    223 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (4 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    224 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (3 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    225 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (2 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    226 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (1 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    227 | 0x0080 read   | PC: 0x0084 AR: 0x0080 IR: load        TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    228 | 0x0080 exec 1 | PC: 0x0084 AR: 0x0340 IR: load        TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    229 | 0x0080 exec 2 | PC: 0x0084 AR: 0x0340 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0340: hit set 4 way 0 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    230 | 0x0084 fetch  | PC: 0x0084 AR: 0x0084 IR: load        TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    231 | 0x0084 read   | PC: 0x0088 AR: 0x0084 IR: push 97     TOS: 104 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0084: hit set 8 way 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    232 | 0x0084 exec 1 | PC: 0x0088 AR: 0x0084 IR: push 97     TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    233 | 0x0088 fetch  | PC: 0x0088 AR: 0x0088 IR: push 97     TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    234 | 0x0088 read   | PC: 0x008C AR: 0x0088 IR: sub         TOS: 97 NOS: 104 SP: 2 RSP: 2 IE: 0 INT: 1 | mem read 0x0088: hit set 8 way 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    235 | 0x0088 exec 1 | PC: 0x008C AR: 0x0088 IR: sub         TOS: 7 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    236 | 0x008C fetch  | PC: 0x008C AR: 0x008C IR: sub         TOS: 7 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    237 | 0x008C read   | PC: 0x0090 AR: 0x008C IR: push 65     TOS: 7 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x008C: hit set 8 way 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    238 | 0x008C exec 1 | PC: 0x0090 AR: 0x008C IR: push 65     TOS: 65 NOS: 7 SP: 2 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    239 | 0x0090 fetch  | PC: 0x0090 AR: 0x0090 IR: push 65     TOS: 65 NOS: 7 SP: 2 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    240 | 0x0090 read   | PC: 0x0090 AR: 0x0090 IR: push 65     TOS: 65 NOS: 7 SP: 2 RSP: 2 IE: 0 INT: 1 | mem read 0x0090: miss set 9 way 1, fill 0x0090, wait memory (10 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    241 | 0x0090 read   | PC: 0x0090 AR: 0x0090 IR: push 65     TOS: 65 NOS: 7 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (9 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    242 | 0x0090 read   | PC: 0x0090 AR: 0x0090 IR: push 65     TOS: 65 NOS: 7 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (8 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    243 | 0x0090 read   | PC: 0x0090 AR: 0x0090 IR: push 65     TOS: 65 NOS: 7 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (7 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    244 | 0x0090 read   | PC: 0x0090 AR: 0x0090 IR: push 65     TOS: 65 NOS: 7 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (6 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    245 | 0x0090 read   | PC: 0x0090 AR: 0x0090 IR: push 65     TOS: 65 NOS: 7 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (5 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    246 | 0x0090 read   | PC: 0x0090 AR: 0x0090 IR: push 65     TOS: 65 NOS: 7 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (4 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    247 | 0x0090 read   | PC: 0x0090 AR: 0x0090 IR: push 65     TOS: 65 NOS: 7 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (3 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    248 | 0x0090 read   | PC: 0x0090 AR: 0x0090 IR: push 65     TOS: 65 NOS: 7 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (2 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    249 | 0x0090 read   | PC: 0x0090 AR: 0x0090 IR: push 65     TOS: 65 NOS: 7 SP: 2 RSP: 2 IE: 0 INT: 1 | wait memory (1 left) ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    250 | 0x0090 read   | PC: 0x0094 AR: 0x0090 IR: add         TOS: 65 NOS: 7 SP: 2 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    251 | 0x0090 exec 1 | PC: 0x0094 AR: 0x0090 IR: add         TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    252 | 0x0094 fetch  | PC: 0x0094 AR: 0x0094 IR: add         TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    253 | 0x0094 read   | PC: 0x0098 AR: 0x0094 IR: push 832    TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0094: hit set 9 way 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    254 | 0x0094 exec 1 | PC: 0x0098 AR: 0x0094 IR: push 832    TOS: 832 NOS: 72 SP: 2 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    255 | 0x0098 fetch  | PC: 0x0098 AR: 0x0098 IR: push 832    TOS: 832 NOS: 72 SP: 2 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    256 | 0x0098 read   | PC: 0x009C AR: 0x0098 IR: store       TOS: 832 NOS: 72 SP: 2 RSP: 2 IE: 0 INT: 1 | mem read 0x0098: hit set 9 way 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    257 | 0x0098 exec 1 | PC: 0x009C AR: 0x0340 IR: store       TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    258 | 0x0098 exec 2 | PC: 0x009C AR: 0x0340 IR: store       TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem write 0x0340: hit set 4 way 0 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    259 | 0x0098 exec 3 | PC: 0x009C AR: 0x0340 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 13: c = c - 'a' + 'A';
+  DEBUG   machine:log           TICK:    260 | 0x009C fetch  | PC: 0x009C AR: 0x009C IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    261 | 0x009C read   | PC: 0x00A0 AR: 0x009C IR: push 832    TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | mem read 0x009C: hit set 9 way 1 ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    262 | 0x009C exec 1 | PC: 0x00A0 AR: 0x009C IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    263 | 0x00A0 fetch  | PC: 0x00A0 AR: 0x00A0 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    264 | 0x00A0 read   | PC: 0x00A0 AR: 0x00A0 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x00A0: miss set 10 way 0, fill 0x00A0, wait memory (10 left) ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    265 | 0x00A0 read   | PC: 0x00A0 AR: 0x00A0 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (9 left) ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    266 | 0x00A0 read   | PC: 0x00A0 AR: 0x00A0 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (8 left) ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    267 | 0x00A0 read   | PC: 0x00A0 AR: 0x00A0 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (7 left) ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    268 | 0x00A0 read   | PC: 0x00A0 AR: 0x00A0 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (6 left) ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    269 | 0x00A0 read   | PC: 0x00A0 AR: 0x00A0 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (5 left) ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    270 | 0x00A0 read   | PC: 0x00A0 AR: 0x00A0 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (4 left) ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    271 | 0x00A0 read   | PC: 0x00A0 AR: 0x00A0 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (3 left) ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    272 | 0x00A0 read   | PC: 0x00A0 AR: 0x00A0 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (2 left) ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    273 | 0x00A0 read   | PC: 0x00A0 AR: 0x00A0 IR: push 832    TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (1 left) ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    274 | 0x00A0 read   | PC: 0x00A4 AR: 0x00A0 IR: load        TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    275 | 0x00A0 exec 1 | PC: 0x00A4 AR: 0x0340 IR: load        TOS: 832 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    276 | 0x00A0 exec 2 | PC: 0x00A4 AR: 0x0340 IR: load        TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x0340: hit set 4 way 0 ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    277 | 0x00A4 fetch  | PC: 0x00A4 AR: 0x00A4 IR: load        TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    278 | 0x00A4 read   | PC: 0x00A8 AR: 0x00A4 IR: out 1       TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x00A4: hit set 10 way 0 ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    279 | 0x00A4 exec 1 | PC: 0x00A8 AR: 0x00A4 IR: out 1       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | out 'H' ; 15: out(1, c);
+  DEBUG   machine:log           TICK:    280 | 0x00A8 fetch  | PC: 0x00A8 AR: 0x00A8 IR: out 1       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    281 | 0x00A8 read   | PC: 0x00AC AR: 0x00A8 IR: push 828    TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 1 | mem read 0x00A8: hit set 10 way 0 ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    282 | 0x00A8 exec 1 | PC: 0x00AC AR: 0x00A8 IR: push 828    TOS: 828 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    283 | 0x00AC fetch  | PC: 0x00AC AR: 0x00AC IR: push 828    TOS: 828 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    284 | 0x00AC read   | PC: 0x00B0 AR: 0x00AC IR: load        TOS: 828 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x00AC: hit set 10 way 0 ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    285 | 0x00AC exec 1 | PC: 0x00B0 AR: 0x033C IR: load        TOS: 828 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    286 | 0x00AC exec 2 | PC: 0x00B0 AR: 0x033C IR: load        TOS: 828 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x033C: miss set 3 way 1, fill 0x0330, wait memory (10 left) ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    287 | 0x00AC exec 2 | PC: 0x00B0 AR: 0x033C IR: load        TOS: 828 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (9 left) ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    288 | 0x00AC exec 2 | PC: 0x00B0 AR: 0x033C IR: load        TOS: 828 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (8 left) ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    289 | 0x00AC exec 2 | PC: 0x00B0 AR: 0x033C IR: load        TOS: 828 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (7 left) ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    290 | 0x00AC exec 2 | PC: 0x00B0 AR: 0x033C IR: load        TOS: 828 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (6 left) ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    291 | 0x00AC exec 2 | PC: 0x00B0 AR: 0x033C IR: load        TOS: 828 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (5 left) ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    292 | 0x00AC exec 2 | PC: 0x00B0 AR: 0x033C IR: load        TOS: 828 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (4 left) ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    293 | 0x00AC exec 2 | PC: 0x00B0 AR: 0x033C IR: load        TOS: 828 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (3 left) ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    294 | 0x00AC exec 2 | PC: 0x00B0 AR: 0x033C IR: load        TOS: 828 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (2 left) ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    295 | 0x00AC exec 2 | PC: 0x00B0 AR: 0x033C IR: load        TOS: 828 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (1 left) ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    296 | 0x00AC exec 2 | PC: 0x00B0 AR: 0x033C IR: load        TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    297 | 0x00B0 fetch  | PC: 0x00B0 AR: 0x00B0 IR: load        TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    298 | 0x00B0 read   | PC: 0x00B0 AR: 0x00B0 IR: load        TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | mem read 0x00B0: miss set 11 way 0, fill 0x00B0, wait memory (10 left) ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    299 | 0x00B0 read   | PC: 0x00B0 AR: 0x00B0 IR: load        TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (9 left) ; 16: received = received + 1;
+  DEBUG   machine:log           TICK:    300 | 0x00B0 read   | PC: 0x00B0 AR: 0x00B0 IR: load        TOS: 0 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 1 | wait memory (8 left) ; 16: received = received + 1;
+  DEBUG   machine:simulate      ... log truncated after 300 ticks
+out_no_cache: |
+  HELLO
+  received: 5
+  main loop iterations: 4
+  instructions: 1447 ticks: 21364
+out_stdout: |
+  source LoC: 62 code instr: 206 data words: 61
+  =====
+  HEL<main>L<main>O
+  received: 5
+  main loop iterations: 27
+  instructions: 2312 ticks: 8703 cache: hits 2814 misses 102
+out_code_hex: |
+  0x0000 - 50000008 - jmp 0x0008 (.start)          ; reset vector
+  0x0004 - 50000014 - jmp 0x0014 (on_input)        ; interrupt vector
+  0x0008 - 70000000 - ei                           ; start: enable interrupts
+  0x000C - 5200028C - call 0x028C (main)           ; start
+  0x0010 - 01000000 - halt                         ; start
+  0x0014 - 60000000 - in 0                         ; 7: let c = in(0);
+  0x0018 - 10000340 - push 0x0340 (on_input.c)     ; 7: let c = in(0);
+  0x001C - 21000000 - store                        ; 7: let c = in(0);
+  0x0020 - 10000340 - push 0x0340 (on_input.c)     ; 8: if (c == 0) {
+  0x0024 - 20000000 - load                         ; 8: if (c == 0) {
+  0x0028 - 10000000 - push 0                       ; 8: if (c == 0) {
+  0x002C - 3A000000 - eq                           ; 8: if (c == 0) {
+  0x0030 - 51000044 - jz 0x0044 (.endif2)          ; 8: if (c == 0) {
+  0x0034 - 10000001 - push 1                       ; 9: done = 1;
+  0x0038 - 10000338 - push 0x0338 (done)           ; 9: done = 1;
+  0x003C - 21000000 - store                        ; 9: done = 1;
+  0x0040 - 72000000 - iret                         ; 10: return;
+  0x0044 - 10000340 - push 0x0340 (on_input.c)     ; 12: if (c >= 'a' && c <= 'z') {
+  0x0048 - 20000000 - load                         ; 12: if (c >= 'a' && c <= 'z') {
+  0x004C - 10000061 - push 97                      ; 12: if (c >= 'a' && c <= 'z') {
+  0x0050 - 3F000000 - ge                           ; 12: if (c >= 'a' && c <= 'z') {
+  0x0054 - 51000074 - jz 0x0074 (.short5)          ; 12: if (c >= 'a' && c <= 'z') {
+  0x0058 - 10000340 - push 0x0340 (on_input.c)     ; 12: if (c >= 'a' && c <= 'z') {
+  0x005C - 20000000 - load                         ; 12: if (c >= 'a' && c <= 'z') {
+  0x0060 - 1000007A - push 122                     ; 12: if (c >= 'a' && c <= 'z') {
+  0x0064 - 3D000000 - le                           ; 12: if (c >= 'a' && c <= 'z') {
+  0x0068 - 51000074 - jz 0x0074 (.short5)          ; 12: if (c >= 'a' && c <= 'z') {
+  0x006C - 10000001 - push 1                       ; 12: if (c >= 'a' && c <= 'z') {
+  0x0070 - 50000078 - jmp 0x0078 (.endlogic6)      ; 12: if (c >= 'a' && c <= 'z') {
+  0x0074 - 10000000 - push 0                       ; 12: if (c >= 'a' && c <= 'z') {
+  0x0078 - 5100009C - jz 0x009C (.endif4)          ; 12: if (c >= 'a' && c <= 'z') {
+  0x007C - 10000340 - push 0x0340 (on_input.c)     ; 13: c = c - 'a' + 'A';
+  0x0080 - 20000000 - load                         ; 13: c = c - 'a' + 'A';
+  0x0084 - 10000061 - push 97                      ; 13: c = c - 'a' + 'A';
+  0x0088 - 31000000 - sub                          ; 13: c = c - 'a' + 'A';
+  0x008C - 10000041 - push 65                      ; 13: c = c - 'a' + 'A';
+  0x0090 - 30000000 - add                          ; 13: c = c - 'a' + 'A';
+  0x0094 - 10000340 - push 0x0340 (on_input.c)     ; 13: c = c - 'a' + 'A';
+  0x0098 - 21000000 - store                        ; 13: c = c - 'a' + 'A';
+  0x009C - 10000340 - push 0x0340 (on_input.c)     ; 15: out(1, c);
+  0x00A0 - 20000000 - load                         ; 15: out(1, c);
+  0x00A4 - 61000001 - out 1                        ; 15: out(1, c);
+  0x00A8 - 1000033C - push 0x033C (received)       ; 16: received = received + 1;
+  0x00AC - 20000000 - load                         ; 16: received = received + 1;
+  0x00B0 - 10000001 - push 1                       ; 16: received = received + 1;
+  0x00B4 - 30000000 - add                          ; 16: received = received + 1;
+  0x00B8 - 1000033C - push 0x033C (received)       ; 16: received = received + 1;
+  0x00BC - 21000000 - store                        ; 16: received = received + 1;
+  0x00C0 - 72000000 - iret                         ; end of on_input
+  0x00C4 - 10000344 - push 0x0344 (print_str.s)    ; 19: fn print_str(s) {
+  0x00C8 - 21000000 - store                        ; 19: fn print_str(s) {
+  0x00CC - 10000001 - push 1                       ; 20: let i = 1;
+  0x00D0 - 10000348 - push 0x0348 (print_str.i)    ; 20: let i = 1;
+  0x00D4 - 21000000 - store                        ; 20: let i = 1;
+  0x00D8 - 10000348 - push 0x0348 (print_str.i)    ; 21: while (i <= s[0]) {
+  0x00DC - 20000000 - load                         ; 21: while (i <= s[0]) {
+  0x00E0 - 10000344 - push 0x0344 (print_str.s)    ; 21: while (i <= s[0]) {
+  0x00E4 - 20000000 - load                         ; 21: while (i <= s[0]) {
+  0x00E8 - 10000000 - push 0                       ; 21: while (i <= s[0]) {
+  0x00EC - 10000002 - push 2                       ; 21: while (i <= s[0]) {
+  0x00F0 - 38000000 - shl                          ; 21: while (i <= s[0]) {
+  0x00F4 - 30000000 - add                          ; 21: while (i <= s[0]) {
+  0x00F8 - 20000000 - load                         ; 21: while (i <= s[0]) {
+  0x00FC - 3D000000 - le                           ; 21: while (i <= s[0]) {
+  0x0100 - 51000144 - jz 0x0144 (.endwhile8)       ; 21: while (i <= s[0]) {
+  0x0104 - 10000344 - push 0x0344 (print_str.s)    ; 22: out(1, s[i]);
+  0x0108 - 20000000 - load                         ; 22: out(1, s[i]);
+  0x010C - 10000348 - push 0x0348 (print_str.i)    ; 22: out(1, s[i]);
+  0x0110 - 20000000 - load                         ; 22: out(1, s[i]);
+  0x0114 - 10000002 - push 2                       ; 22: out(1, s[i]);
+  0x0118 - 38000000 - shl                          ; 22: out(1, s[i]);
+  0x011C - 30000000 - add                          ; 22: out(1, s[i]);
+  0x0120 - 20000000 - load                         ; 22: out(1, s[i]);
+  0x0124 - 61000001 - out 1                        ; 22: out(1, s[i]);
+  0x0128 - 10000348 - push 0x0348 (print_str.i)    ; 23: i = i + 1;
+  0x012C - 20000000 - load                         ; 23: i = i + 1;
+  0x0130 - 10000001 - push 1                       ; 23: i = i + 1;
+  0x0134 - 30000000 - add                          ; 23: i = i + 1;
+  0x0138 - 10000348 - push 0x0348 (print_str.i)    ; 23: i = i + 1;
+  0x013C - 21000000 - store                        ; 23: i = i + 1;
+  0x0140 - 500000D8 - jmp 0x00D8 (.while7)         ; 23: i = i + 1;
+  0x0144 - 10000000 - push 0                       ; end of print_str: implicit return 0
+  0x0148 - 53000000 - ret                          ; end of print_str
+  0x014C - 1000034C - push 0x034C (print_int.n)    ; 27: fn print_int(n) {
+  0x0150 - 21000000 - store                        ; 27: fn print_int(n) {
+  0x0154 - 1000034C - push 0x034C (print_int.n)    ; 29: if (n < 0) {
+  0x0158 - 20000000 - load                         ; 29: if (n < 0) {
+  0x015C - 10000000 - push 0                       ; 29: if (n < 0) {
+  0x0160 - 3C000000 - lt                           ; 29: if (n < 0) {
+  0x0164 - 51000174 - jz 0x0174 (.else9)           ; 29: if (n < 0) {
+  0x0168 - 1000002D - push 45                      ; 30: out(1, '-');
+  0x016C - 61000001 - out 1                        ; 30: out(1, '-');
+  0x0170 - 50000188 - jmp 0x0188 (.endif10)        ; 30: out(1, '-');
+  0x0174 - 1000034C - push 0x034C (print_int.n)    ; 32: n = -n;
+  0x0178 - 20000000 - load                         ; 32: n = -n;
+  0x017C - 40000000 - neg                          ; 32: n = -n;
+  0x0180 - 1000034C - push 0x034C (print_int.n)    ; 32: n = -n;
+  0x0184 - 21000000 - store                        ; 32: n = -n;
+  0x0188 - 10000000 - push 0                       ; 35: let count = 0;
+  0x018C - 10000378 - push 0x0378 (print_int.count) ; 35: let count = 0;
+  0x0190 - 21000000 - store                        ; 35: let count = 0;
+  0x0194 - 10000378 - push 0x0378 (print_int.count) ; 36: while (count == 0 || n != 0) {
+  0x0198 - 20000000 - load                         ; 36: while (count == 0 || n != 0) {
+  0x019C - 10000000 - push 0                       ; 36: while (count == 0 || n != 0) {
+  0x01A0 - 3A000000 - eq                           ; 36: while (count == 0 || n != 0) {
+  0x01A4 - 510001B0 - jz 0x01B0 (.short13)         ; 36: while (count == 0 || n != 0) {
+  0x01A8 - 10000001 - push 1                       ; 36: while (count == 0 || n != 0) {
+  0x01AC - 500001C8 - jmp 0x01C8 (.endlogic14)     ; 36: while (count == 0 || n != 0) {
+  0x01B0 - 1000034C - push 0x034C (print_int.n)    ; 36: while (count == 0 || n != 0) {
+  0x01B4 - 20000000 - load                         ; 36: while (count == 0 || n != 0) {
+  0x01B8 - 10000000 - push 0                       ; 36: while (count == 0 || n != 0) {
+  0x01BC - 3B000000 - ne                           ; 36: while (count == 0 || n != 0) {
+  0x01C0 - 10000000 - push 0                       ; 36: while (count == 0 || n != 0) {
+  0x01C4 - 3B000000 - ne                           ; 36: while (count == 0 || n != 0) {
+  0x01C8 - 51000234 - jz 0x0234 (.endwhile12)      ; 36: while (count == 0 || n != 0) {
+  0x01CC - 10000030 - push 48                      ; 37: digits[count] = '0' - n % 10;
+  0x01D0 - 1000034C - push 0x034C (print_int.n)    ; 37: digits[count] = '0' - n % 10;
+  0x01D4 - 20000000 - load                         ; 37: digits[count] = '0' - n % 10;
+  0x01D8 - 1000000A - push 10                      ; 37: digits[count] = '0' - n % 10;
+  0x01DC - 34000000 - mod                          ; 37: digits[count] = '0' - n % 10;
+  0x01E0 - 31000000 - sub                          ; 37: digits[count] = '0' - n % 10;
+  0x01E4 - 10000350 - push 0x0350 (print_int.digits) ; 37: digits[count] = '0' - n % 10;
+  0x01E8 - 10000378 - push 0x0378 (print_int.count) ; 37: digits[count] = '0' - n % 10;
+  0x01EC - 20000000 - load                         ; 37: digits[count] = '0' - n % 10;
+  0x01F0 - 10000002 - push 2                       ; 37: digits[count] = '0' - n % 10;
+  0x01F4 - 38000000 - shl                          ; 37: digits[count] = '0' - n % 10;
+  0x01F8 - 30000000 - add                          ; 37: digits[count] = '0' - n % 10;
+  0x01FC - 21000000 - store                        ; 37: digits[count] = '0' - n % 10;
+  0x0200 - 1000034C - push 0x034C (print_int.n)    ; 38: n = n / 10;
+  0x0204 - 20000000 - load                         ; 38: n = n / 10;
+  0x0208 - 1000000A - push 10                      ; 38: n = n / 10;
+  0x020C - 33000000 - div                          ; 38: n = n / 10;
+  0x0210 - 1000034C - push 0x034C (print_int.n)    ; 38: n = n / 10;
+  0x0214 - 21000000 - store                        ; 38: n = n / 10;
+  0x0218 - 10000378 - push 0x0378 (print_int.count) ; 39: count = count + 1;
+  0x021C - 20000000 - load                         ; 39: count = count + 1;
+  0x0220 - 10000001 - push 1                       ; 39: count = count + 1;
+  0x0224 - 30000000 - add                          ; 39: count = count + 1;
+  0x0228 - 10000378 - push 0x0378 (print_int.count) ; 39: count = count + 1;
+  0x022C - 21000000 - store                        ; 39: count = count + 1;
+  0x0230 - 50000194 - jmp 0x0194 (.while11)        ; 39: count = count + 1;
+  0x0234 - 10000378 - push 0x0378 (print_int.count) ; 41: while (count > 0) {
+  0x0238 - 20000000 - load                         ; 41: while (count > 0) {
+  0x023C - 10000000 - push 0                       ; 41: while (count > 0) {
+  0x0240 - 3E000000 - gt                           ; 41: while (count > 0) {
+  0x0244 - 51000284 - jz 0x0284 (.endwhile16)      ; 41: while (count > 0) {
+  0x0248 - 10000378 - push 0x0378 (print_int.count) ; 42: count = count - 1;
+  0x024C - 20000000 - load                         ; 42: count = count - 1;
+  0x0250 - 10000001 - push 1                       ; 42: count = count - 1;
+  0x0254 - 31000000 - sub                          ; 42: count = count - 1;
+  0x0258 - 10000378 - push 0x0378 (print_int.count) ; 42: count = count - 1;
+  0x025C - 21000000 - store                        ; 42: count = count - 1;
+  0x0260 - 10000350 - push 0x0350 (print_int.digits) ; 43: out(1, digits[count]);
+  0x0264 - 10000378 - push 0x0378 (print_int.count) ; 43: out(1, digits[count]);
+  0x0268 - 20000000 - load                         ; 43: out(1, digits[count]);
+  0x026C - 10000002 - push 2                       ; 43: out(1, digits[count]);
+  0x0270 - 38000000 - shl                          ; 43: out(1, digits[count]);
+  0x0274 - 30000000 - add                          ; 43: out(1, digits[count]);
+  0x0278 - 20000000 - load                         ; 43: out(1, digits[count]);
+  0x027C - 61000001 - out 1                        ; 43: out(1, digits[count]);
+  0x0280 - 50000234 - jmp 0x0234 (.while15)        ; 43: out(1, digits[count]);
+  0x0284 - 10000000 - push 0                       ; end of print_int: implicit return 0
+  0x0288 - 53000000 - ret                          ; end of print_int
+  0x028C - 10000000 - push 0                       ; 48: let loops = 0;
+  0x0290 - 1000037C - push 0x037C (main.loops)     ; 48: let loops = 0;
+  0x0294 - 21000000 - store                        ; 48: let loops = 0;
+  0x0298 - 10000338 - push 0x0338 (done)           ; 49: while (!done) {
+  0x029C - 20000000 - load                         ; 49: while (!done) {
+  0x02A0 - 10000000 - push 0                       ; 49: while (!done) {
+  0x02A4 - 3A000000 - eq                           ; 49: while (!done) {
+  0x02A8 - 510002F8 - jz 0x02F8 (.endwhile18)      ; 49: while (!done) {
+  0x02AC - 1000037C - push 0x037C (main.loops)     ; 50: loops = loops + 1;
+  0x02B0 - 20000000 - load                         ; 50: loops = loops + 1;
+  0x02B4 - 10000001 - push 1                       ; 50: loops = loops + 1;
+  0x02B8 - 30000000 - add                          ; 50: loops = loops + 1;
+  0x02BC - 1000037C - push 0x037C (main.loops)     ; 50: loops = loops + 1;
+  0x02C0 - 21000000 - store                        ; 50: loops = loops + 1;
+  0x02C4 - 1000037C - push 0x037C (main.loops)     ; 51: if (loops % 10 == 0) {
+  0x02C8 - 20000000 - load                         ; 51: if (loops % 10 == 0) {
+  0x02CC - 1000000A - push 10                      ; 51: if (loops % 10 == 0) {
+  0x02D0 - 34000000 - mod                          ; 51: if (loops % 10 == 0) {
+  0x02D4 - 10000000 - push 0                       ; 51: if (loops % 10 == 0) {
+  0x02D8 - 3A000000 - eq                           ; 51: if (loops % 10 == 0) {
+  0x02DC - 510002F4 - jz 0x02F4 (.endif20)         ; 51: if (loops % 10 == 0) {
+  0x02E0 - 71000000 - di                           ; 53: di();
+  0x02E4 - 10000380 - push 0x0380 (.str0)          ; 54: print_str("<main>");
+  0x02E8 - 520000C4 - call 0x00C4 (print_str)      ; 54: print_str("<main>");
+  0x02EC - 12000000 - drop                         ; 54: print_str("<main>");
+  0x02F0 - 70000000 - ei                           ; 55: ei();
+  0x02F4 - 50000298 - jmp 0x0298 (.while17)        ; 55: ei();
+  0x02F8 - 1000039C - push 0x039C (.str1)          ; 58: print_str("\nreceived: ");
+  0x02FC - 520000C4 - call 0x00C4 (print_str)      ; 58: print_str("\nreceived: ");
+  0x0300 - 12000000 - drop                         ; 58: print_str("\nreceived: ");
+  0x0304 - 1000033C - push 0x033C (received)       ; 59: print_int(received);
+  0x0308 - 20000000 - load                         ; 59: print_int(received);
+  0x030C - 5200014C - call 0x014C (print_int)      ; 59: print_int(received);
+  0x0310 - 12000000 - drop                         ; 59: print_int(received);
+  0x0314 - 100003CC - push 0x03CC (.str2)          ; 60: print_str("\nmain loop iterations: ");
+  0x0318 - 520000C4 - call 0x00C4 (print_str)      ; 60: print_str("\nmain loop iterations: ");
+  0x031C - 12000000 - drop                         ; 60: print_str("\nmain loop iterations: ");
+  0x0320 - 1000037C - push 0x037C (main.loops)     ; 61: print_int(loops);
+  0x0324 - 20000000 - load                         ; 61: print_int(loops);
+  0x0328 - 5200014C - call 0x014C (print_int)      ; 61: print_int(loops);
+  0x032C - 12000000 - drop                         ; 61: print_int(loops);
+  0x0330 - 10000000 - push 0                       ; end of main: implicit return 0
+  0x0334 - 53000000 - ret                          ; end of main
+  0x0338 - 00000000 - data                         ; done: var
+  0x033C - 00000000 - data                         ; received: var
+  0x0340 - 00000000 - data                         ; on_input.c: var
+  0x0344 - 00000000 - data                         ; print_str.s: var
+  0x0348 - 00000000 - data                         ; print_str.i: var
+  0x034C - 00000000 - data                         ; print_int.n: var
+  0x0350 - 00000000 - data                         ; print_int.digits: array [10]
+  0x0354 - 00000000 - data                         ; print_int.digits+1
+  0x0358 - 00000000 - data                         ; print_int.digits+2
+  0x035C - 00000000 - data                         ; print_int.digits+3
+  0x0360 - 00000000 - data                         ; print_int.digits+4
+  0x0364 - 00000000 - data                         ; print_int.digits+5
+  0x0368 - 00000000 - data                         ; print_int.digits+6
+  0x036C - 00000000 - data                         ; print_int.digits+7
+  0x0370 - 00000000 - data                         ; print_int.digits+8
+  0x0374 - 00000000 - data                         ; print_int.digits+9
+  0x0378 - 00000000 - data                         ; print_int.count: var
+  0x037C - 00000000 - data                         ; main.loops: var
+  0x0380 - 00000006 - data                         ; .str0: pstr '<main>'
+  0x0384 - 0000003C - data                         ; .str0+1
+  0x0388 - 0000006D - data                         ; .str0+2
+  0x038C - 00000061 - data                         ; .str0+3
+  0x0390 - 00000069 - data                         ; .str0+4
+  0x0394 - 0000006E - data                         ; .str0+5
+  0x0398 - 0000003E - data                         ; .str0+6
+  0x039C - 0000000B - data                         ; .str1: pstr '\nreceived: '
+  0x03A0 - 0000000A - data                         ; .str1+1
+  0x03A4 - 00000072 - data                         ; .str1+2
+  0x03A8 - 00000065 - data                         ; .str1+3
+  0x03AC - 00000063 - data                         ; .str1+4
+  0x03B0 - 00000065 - data                         ; .str1+5
+  0x03B4 - 00000069 - data                         ; .str1+6
+  0x03B8 - 00000076 - data                         ; .str1+7
+  0x03BC - 00000065 - data                         ; .str1+8
+  0x03C0 - 00000064 - data                         ; .str1+9
+  0x03C4 - 0000003A - data                         ; .str1+10
+  0x03C8 - 00000020 - data                         ; .str1+11
+  0x03CC - 00000017 - data                         ; .str2: pstr '\nmain loop iterations: '
+  0x03D0 - 0000000A - data                         ; .str2+1
+  0x03D4 - 0000006D - data                         ; .str2+2
+  0x03D8 - 00000061 - data                         ; .str2+3
+  0x03DC - 00000069 - data                         ; .str2+4
+  0x03E0 - 0000006E - data                         ; .str2+5
+  0x03E4 - 00000020 - data                         ; .str2+6
+  0x03E8 - 0000006C - data                         ; .str2+7
+  0x03EC - 0000006F - data                         ; .str2+8
+  0x03F0 - 0000006F - data                         ; .str2+9
+  0x03F4 - 00000070 - data                         ; .str2+10
+  0x03F8 - 00000020 - data                         ; .str2+11
+  0x03FC - 00000069 - data                         ; .str2+12
+  0x0400 - 00000074 - data                         ; .str2+13
+  0x0404 - 00000065 - data                         ; .str2+14
+  0x0408 - 00000072 - data                         ; .str2+15
+  0x040C - 00000061 - data                         ; .str2+16
+  0x0410 - 00000074 - data                         ; .str2+17
+  0x0414 - 00000069 - data                         ; .str2+18
+  0x0418 - 0000006F - data                         ; .str2+19
+  0x041C - 0000006E - data                         ; .str2+20
+  0x0420 - 00000073 - data                         ; .str2+21
+  0x0424 - 0000003A - data                         ; .str2+22
+  0x0428 - 00000020 - data                         ; .str2+23
+out_code: |
+  50000008 50000014 70000000 5200028C 01000000 60000000 10000340 21000000
+  10000340 20000000 10000000 3A000000 51000044 10000001 10000338 21000000
+  72000000 10000340 20000000 10000061 3F000000 51000074 10000340 20000000
+  1000007A 3D000000 51000074 10000001 50000078 10000000 5100009C 10000340
+  20000000 10000061 31000000 10000041 30000000 10000340 21000000 10000340
+  20000000 61000001 1000033C 20000000 10000001 30000000 1000033C 21000000
+  72000000 10000344 21000000 10000001 10000348 21000000 10000348 20000000
+  10000344 20000000 10000000 10000002 38000000 30000000 20000000 3D000000
+  51000144 10000344 20000000 10000348 20000000 10000002 38000000 30000000
+  20000000 61000001 10000348 20000000 10000001 30000000 10000348 21000000
+  500000D8 10000000 53000000 1000034C 21000000 1000034C 20000000 10000000
+  3C000000 51000174 1000002D 61000001 50000188 1000034C 20000000 40000000
+  1000034C 21000000 10000000 10000378 21000000 10000378 20000000 10000000
+  3A000000 510001B0 10000001 500001C8 1000034C 20000000 10000000 3B000000
+  10000000 3B000000 51000234 10000030 1000034C 20000000 1000000A 34000000
+  31000000 10000350 10000378 20000000 10000002 38000000 30000000 21000000
+  1000034C 20000000 1000000A 33000000 1000034C 21000000 10000378 20000000
+  10000001 30000000 10000378 21000000 50000194 10000378 20000000 10000000
+  3E000000 51000284 10000378 20000000 10000001 31000000 10000378 21000000
+  10000350 10000378 20000000 10000002 38000000 30000000 20000000 61000001
+  50000234 10000000 53000000 10000000 1000037C 21000000 10000338 20000000
+  10000000 3A000000 510002F8 1000037C 20000000 10000001 30000000 1000037C
+  21000000 1000037C 20000000 1000000A 34000000 10000000 3A000000 510002F4
+  71000000 10000380 520000C4 12000000 70000000 50000298 1000039C 520000C4
+  12000000 1000033C 20000000 5200014C 12000000 100003CC 520000C4 12000000
+  1000037C 20000000 5200014C 12000000 10000000 53000000 00000000 00000000
+  00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+  00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+  00000006 0000003C 0000006D 00000061 00000069 0000006E 0000003E 0000000B
+  0000000A 00000072 00000065 00000063 00000065 00000069 00000076 00000065
+  00000064 0000003A 00000020 00000017 0000000A 0000006D 00000061 00000069
+  0000006E 00000020 0000006C 0000006F 0000006F 00000070 00000020 00000069
+  00000074 00000065 00000072 00000061 00000074 00000069 0000006F 0000006E
+  00000073 0000003A 00000020
+out_ast: |
+  let done = 0
+  let received = 0
+  interrupt on_input()
+    let c = (call in 0)
+    if (== c 0)
+      set done = 1
+      return
+    if (&& (>= c 97) (<= c 122))
+      set c = (+ (- c 97) 65)
+    expr (call out 1 c)
+    set received = (+ received 1)
+  fn print_str(s)
+    let i = 1
+    while (<= i ([] s 0))
+      expr (call out 1 ([] s i))
+      set i = (+ i 1)
+  fn print_int(n)
+    let digits[10]
+    if (< n 0)
+      expr (call out 1 45)
+    else
+      set n = (- n)
+    let count = 0
+    while (|| (== count 0) (!= n 0))
+      set ([] digits count) = (- 48 (% n 10))
+      set n = (/ n 10)
+      set count = (+ count 1)
+    while (> count 0)
+      set count = (- count 1)
+      expr (call out 1 ([] digits count))
+  fn main()
+    let loops = 0
+    while (! done)
+      set loops = (+ loops 1)
+      if (== (% loops 10) 0)
+        expr (call di)
+        expr (call print_str '<main>')
+        expr (call ei)
+    expr (call print_str '\nreceived: ')
+    expr (call print_int received)
+    expr (call print_str '\nmain loop iterations: ')
+    expr (call print_int loops)

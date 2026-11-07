@@ -1,0 +1,401 @@
+in_source: |
+  fn print_str(s) {
+      let i = 1;
+      while (i <= s[0]) {
+          out(1, s[i]);
+          i = i + 1;
+      }
+  }
+
+  fn main() {
+      print_str("Hello, World!");
+  }
+in_stdin: |
+  []
+out_log: |
+  DEBUG   machine:log           TICK:      1 | 0x0000 fetch  | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 ; reset vector
+  DEBUG   machine:log           TICK:      2 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | mem read 0x0000: miss set 0 way 0, fill 0x0000, wait memory (10 left) ; reset vector
+  DEBUG   machine:log           TICK:      3 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (9 left) ; reset vector
+  DEBUG   machine:log           TICK:      4 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (8 left) ; reset vector
+  DEBUG   machine:log           TICK:      5 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (7 left) ; reset vector
+  DEBUG   machine:log           TICK:      6 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (6 left) ; reset vector
+  DEBUG   machine:log           TICK:      7 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (5 left) ; reset vector
+  DEBUG   machine:log           TICK:      8 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (4 left) ; reset vector
+  DEBUG   machine:log           TICK:      9 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (3 left) ; reset vector
+  DEBUG   machine:log           TICK:     10 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (2 left) ; reset vector
+  DEBUG   machine:log           TICK:     11 | 0x0000 read   | PC: 0x0000 AR: 0x0000 IR: nop         TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | wait memory (1 left) ; reset vector
+  DEBUG   machine:log           TICK:     12 | 0x0000 read   | PC: 0x0004 AR: 0x0000 IR: jmp 0x0008  TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 ; reset vector
+  DEBUG   machine:log           TICK:     13 | 0x0000 exec 1 | PC: 0x0008 AR: 0x0000 IR: jmp 0x0008  TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 ; reset vector
+  DEBUG   machine:log           TICK:     14 | 0x0008 fetch  | PC: 0x0008 AR: 0x0008 IR: jmp 0x0008  TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 ; start
+  DEBUG   machine:log           TICK:     15 | 0x0008 read   | PC: 0x000C AR: 0x0008 IR: call 0x0098 TOS: 0 NOS: 0 SP: 0 RSP: 0 IE: 0 INT: 0 | mem read 0x0008: hit set 0 way 0 ; start
+  DEBUG   machine:log           TICK:     16 | 0x0008 exec 1 | PC: 0x0098 AR: 0x0008 IR: call 0x0098 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 ; start
+  DEBUG   machine:log           TICK:     17 | 0x0098 fetch  | PC: 0x0098 AR: 0x0098 IR: call 0x0098 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     18 | 0x0098 read   | PC: 0x0098 AR: 0x0098 IR: call 0x0098 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | mem read 0x0098: miss set 9 way 0, fill 0x0090, wait memory (10 left) ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     19 | 0x0098 read   | PC: 0x0098 AR: 0x0098 IR: call 0x0098 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (9 left) ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     20 | 0x0098 read   | PC: 0x0098 AR: 0x0098 IR: call 0x0098 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (8 left) ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     21 | 0x0098 read   | PC: 0x0098 AR: 0x0098 IR: call 0x0098 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (7 left) ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     22 | 0x0098 read   | PC: 0x0098 AR: 0x0098 IR: call 0x0098 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (6 left) ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     23 | 0x0098 read   | PC: 0x0098 AR: 0x0098 IR: call 0x0098 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (5 left) ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     24 | 0x0098 read   | PC: 0x0098 AR: 0x0098 IR: call 0x0098 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (4 left) ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     25 | 0x0098 read   | PC: 0x0098 AR: 0x0098 IR: call 0x0098 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (3 left) ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     26 | 0x0098 read   | PC: 0x0098 AR: 0x0098 IR: call 0x0098 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (2 left) ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     27 | 0x0098 read   | PC: 0x0098 AR: 0x0098 IR: call 0x0098 TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 | wait memory (1 left) ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     28 | 0x0098 read   | PC: 0x009C AR: 0x0098 IR: push 180    TOS: 0 NOS: 0 SP: 0 RSP: 1 IE: 0 INT: 0 ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     29 | 0x0098 exec 1 | PC: 0x009C AR: 0x0098 IR: push 180    TOS: 180 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     30 | 0x009C fetch  | PC: 0x009C AR: 0x009C IR: push 180    TOS: 180 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     31 | 0x009C read   | PC: 0x00A0 AR: 0x009C IR: call 0x0010 TOS: 180 NOS: 0 SP: 1 RSP: 1 IE: 0 INT: 0 | mem read 0x009C: hit set 9 way 0 ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     32 | 0x009C exec 1 | PC: 0x0010 AR: 0x009C IR: call 0x0010 TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 10: print_str("Hello, World!");
+  DEBUG   machine:log           TICK:     33 | 0x0010 fetch  | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     34 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x0010: miss set 1 way 0, fill 0x0010, wait memory (10 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     35 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (9 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     36 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (8 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     37 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (7 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     38 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (6 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     39 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (5 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     40 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (4 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     41 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (3 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     42 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (2 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     43 | 0x0010 read   | PC: 0x0010 AR: 0x0010 IR: call 0x0010 TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (1 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     44 | 0x0010 read   | PC: 0x0014 AR: 0x0010 IR: push 172    TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     45 | 0x0010 exec 1 | PC: 0x0014 AR: 0x0010 IR: push 172    TOS: 172 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     46 | 0x0014 fetch  | PC: 0x0014 AR: 0x0014 IR: push 172    TOS: 172 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     47 | 0x0014 read   | PC: 0x0018 AR: 0x0014 IR: store       TOS: 172 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0014: hit set 1 way 0 ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     48 | 0x0014 exec 1 | PC: 0x0018 AR: 0x00AC IR: store       TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     49 | 0x0014 exec 2 | PC: 0x0018 AR: 0x00AC IR: store       TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem write 0x00AC: miss set 10 way 0, fill 0x00A0, wait memory (10 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     50 | 0x0014 exec 2 | PC: 0x0018 AR: 0x00AC IR: store       TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (9 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     51 | 0x0014 exec 2 | PC: 0x0018 AR: 0x00AC IR: store       TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (8 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     52 | 0x0014 exec 2 | PC: 0x0018 AR: 0x00AC IR: store       TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (7 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     53 | 0x0014 exec 2 | PC: 0x0018 AR: 0x00AC IR: store       TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (6 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     54 | 0x0014 exec 2 | PC: 0x0018 AR: 0x00AC IR: store       TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (5 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     55 | 0x0014 exec 2 | PC: 0x0018 AR: 0x00AC IR: store       TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (4 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     56 | 0x0014 exec 2 | PC: 0x0018 AR: 0x00AC IR: store       TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (3 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     57 | 0x0014 exec 2 | PC: 0x0018 AR: 0x00AC IR: store       TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (2 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     58 | 0x0014 exec 2 | PC: 0x0018 AR: 0x00AC IR: store       TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (1 left) ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     59 | 0x0014 exec 2 | PC: 0x0018 AR: 0x00AC IR: store       TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     60 | 0x0014 exec 3 | PC: 0x0018 AR: 0x00AC IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 1: fn print_str(s) {
+  DEBUG   machine:log           TICK:     61 | 0x0018 fetch  | PC: 0x0018 AR: 0x0018 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     62 | 0x0018 read   | PC: 0x001C AR: 0x0018 IR: push 1      TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | mem read 0x0018: hit set 1 way 0 ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     63 | 0x0018 exec 1 | PC: 0x001C AR: 0x0018 IR: push 1      TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     64 | 0x001C fetch  | PC: 0x001C AR: 0x001C IR: push 1      TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     65 | 0x001C read   | PC: 0x0020 AR: 0x001C IR: push 176    TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x001C: hit set 1 way 0 ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     66 | 0x001C exec 1 | PC: 0x0020 AR: 0x001C IR: push 176    TOS: 176 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     67 | 0x0020 fetch  | PC: 0x0020 AR: 0x0020 IR: push 176    TOS: 176 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     68 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: push 176    TOS: 176 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0020: miss set 2 way 0, fill 0x0020, wait memory (10 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     69 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: push 176    TOS: 176 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (9 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     70 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: push 176    TOS: 176 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (8 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     71 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: push 176    TOS: 176 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (7 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     72 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: push 176    TOS: 176 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (6 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     73 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: push 176    TOS: 176 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (5 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     74 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: push 176    TOS: 176 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (4 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     75 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: push 176    TOS: 176 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (3 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     76 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: push 176    TOS: 176 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (2 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     77 | 0x0020 read   | PC: 0x0020 AR: 0x0020 IR: push 176    TOS: 176 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (1 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     78 | 0x0020 read   | PC: 0x0024 AR: 0x0020 IR: store       TOS: 176 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     79 | 0x0020 exec 1 | PC: 0x0024 AR: 0x00B0 IR: store       TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     80 | 0x0020 exec 2 | PC: 0x0024 AR: 0x00B0 IR: store       TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem write 0x00B0: miss set 11 way 0, fill 0x00B0, wait memory (10 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     81 | 0x0020 exec 2 | PC: 0x0024 AR: 0x00B0 IR: store       TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (9 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     82 | 0x0020 exec 2 | PC: 0x0024 AR: 0x00B0 IR: store       TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (8 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     83 | 0x0020 exec 2 | PC: 0x0024 AR: 0x00B0 IR: store       TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (7 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     84 | 0x0020 exec 2 | PC: 0x0024 AR: 0x00B0 IR: store       TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (6 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     85 | 0x0020 exec 2 | PC: 0x0024 AR: 0x00B0 IR: store       TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (5 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     86 | 0x0020 exec 2 | PC: 0x0024 AR: 0x00B0 IR: store       TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (4 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     87 | 0x0020 exec 2 | PC: 0x0024 AR: 0x00B0 IR: store       TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (3 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     88 | 0x0020 exec 2 | PC: 0x0024 AR: 0x00B0 IR: store       TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (2 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     89 | 0x0020 exec 2 | PC: 0x0024 AR: 0x00B0 IR: store       TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (1 left) ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     90 | 0x0020 exec 2 | PC: 0x0024 AR: 0x00B0 IR: store       TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     91 | 0x0020 exec 3 | PC: 0x0024 AR: 0x00B0 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 2: let i = 1;
+  DEBUG   machine:log           TICK:     92 | 0x0024 fetch  | PC: 0x0024 AR: 0x0024 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:     93 | 0x0024 read   | PC: 0x0028 AR: 0x0024 IR: push 176    TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | mem read 0x0024: hit set 2 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:     94 | 0x0024 exec 1 | PC: 0x0028 AR: 0x0024 IR: push 176    TOS: 176 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:     95 | 0x0028 fetch  | PC: 0x0028 AR: 0x0028 IR: push 176    TOS: 176 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:     96 | 0x0028 read   | PC: 0x002C AR: 0x0028 IR: load        TOS: 176 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x0028: hit set 2 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:     97 | 0x0028 exec 1 | PC: 0x002C AR: 0x00B0 IR: load        TOS: 176 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:     98 | 0x0028 exec 2 | PC: 0x002C AR: 0x00B0 IR: load        TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x00B0: hit set 11 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:     99 | 0x002C fetch  | PC: 0x002C AR: 0x002C IR: load        TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    100 | 0x002C read   | PC: 0x0030 AR: 0x002C IR: push 172    TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x002C: hit set 2 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    101 | 0x002C exec 1 | PC: 0x0030 AR: 0x002C IR: push 172    TOS: 172 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    102 | 0x0030 fetch  | PC: 0x0030 AR: 0x0030 IR: push 172    TOS: 172 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    103 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 172    TOS: 172 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0030: miss set 3 way 0, fill 0x0030, wait memory (10 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    104 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 172    TOS: 172 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (9 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    105 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 172    TOS: 172 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (8 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    106 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 172    TOS: 172 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (7 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    107 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 172    TOS: 172 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (6 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    108 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 172    TOS: 172 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (5 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    109 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 172    TOS: 172 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (4 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    110 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 172    TOS: 172 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (3 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    111 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 172    TOS: 172 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (2 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    112 | 0x0030 read   | PC: 0x0030 AR: 0x0030 IR: push 172    TOS: 172 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (1 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    113 | 0x0030 read   | PC: 0x0034 AR: 0x0030 IR: load        TOS: 172 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    114 | 0x0030 exec 1 | PC: 0x0034 AR: 0x00AC IR: load        TOS: 172 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    115 | 0x0030 exec 2 | PC: 0x0034 AR: 0x00AC IR: load        TOS: 180 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x00AC: hit set 10 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    116 | 0x0034 fetch  | PC: 0x0034 AR: 0x0034 IR: load        TOS: 180 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    117 | 0x0034 read   | PC: 0x0038 AR: 0x0034 IR: push 0      TOS: 180 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0034: hit set 3 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    118 | 0x0034 exec 1 | PC: 0x0038 AR: 0x0034 IR: push 0      TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    119 | 0x0038 fetch  | PC: 0x0038 AR: 0x0038 IR: push 0      TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    120 | 0x0038 read   | PC: 0x003C AR: 0x0038 IR: push 2      TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 | mem read 0x0038: hit set 3 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    121 | 0x0038 exec 1 | PC: 0x003C AR: 0x0038 IR: push 2      TOS: 2 NOS: 0 SP: 4 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    122 | 0x003C fetch  | PC: 0x003C AR: 0x003C IR: push 2      TOS: 2 NOS: 0 SP: 4 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    123 | 0x003C read   | PC: 0x0040 AR: 0x003C IR: shl         TOS: 2 NOS: 0 SP: 4 RSP: 2 IE: 0 INT: 0 | mem read 0x003C: hit set 3 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    124 | 0x003C exec 1 | PC: 0x0040 AR: 0x003C IR: shl         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    125 | 0x0040 fetch  | PC: 0x0040 AR: 0x0040 IR: shl         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    126 | 0x0040 read   | PC: 0x0040 AR: 0x0040 IR: shl         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 | mem read 0x0040: miss set 4 way 0, fill 0x0040, wait memory (10 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    127 | 0x0040 read   | PC: 0x0040 AR: 0x0040 IR: shl         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 | wait memory (9 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    128 | 0x0040 read   | PC: 0x0040 AR: 0x0040 IR: shl         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 | wait memory (8 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    129 | 0x0040 read   | PC: 0x0040 AR: 0x0040 IR: shl         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 | wait memory (7 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    130 | 0x0040 read   | PC: 0x0040 AR: 0x0040 IR: shl         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 | wait memory (6 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    131 | 0x0040 read   | PC: 0x0040 AR: 0x0040 IR: shl         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 | wait memory (5 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    132 | 0x0040 read   | PC: 0x0040 AR: 0x0040 IR: shl         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 | wait memory (4 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    133 | 0x0040 read   | PC: 0x0040 AR: 0x0040 IR: shl         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 | wait memory (3 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    134 | 0x0040 read   | PC: 0x0040 AR: 0x0040 IR: shl         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 | wait memory (2 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    135 | 0x0040 read   | PC: 0x0040 AR: 0x0040 IR: shl         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 | wait memory (1 left) ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    136 | 0x0040 read   | PC: 0x0044 AR: 0x0040 IR: add         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    137 | 0x0040 exec 1 | PC: 0x0044 AR: 0x0040 IR: add         TOS: 180 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    138 | 0x0044 fetch  | PC: 0x0044 AR: 0x0044 IR: add         TOS: 180 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    139 | 0x0044 read   | PC: 0x0048 AR: 0x0044 IR: load        TOS: 180 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0044: hit set 4 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    140 | 0x0044 exec 1 | PC: 0x0048 AR: 0x00B4 IR: load        TOS: 180 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    141 | 0x0044 exec 2 | PC: 0x0048 AR: 0x00B4 IR: load        TOS: 13 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x00B4: hit set 11 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    142 | 0x0048 fetch  | PC: 0x0048 AR: 0x0048 IR: load        TOS: 13 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    143 | 0x0048 read   | PC: 0x004C AR: 0x0048 IR: le          TOS: 13 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0048: hit set 4 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    144 | 0x0048 exec 1 | PC: 0x004C AR: 0x0048 IR: le          TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    145 | 0x004C fetch  | PC: 0x004C AR: 0x004C IR: le          TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    146 | 0x004C read   | PC: 0x0050 AR: 0x004C IR: jz 0x0090   TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x004C: hit set 4 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    147 | 0x004C exec 1 | PC: 0x0050 AR: 0x004C IR: jz 0x0090   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    148 | 0x0050 fetch  | PC: 0x0050 AR: 0x0050 IR: jz 0x0090   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    149 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: jz 0x0090   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | mem read 0x0050: miss set 5 way 0, fill 0x0050, wait memory (10 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    150 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: jz 0x0090   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | wait memory (9 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    151 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: jz 0x0090   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | wait memory (8 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    152 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: jz 0x0090   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | wait memory (7 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    153 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: jz 0x0090   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | wait memory (6 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    154 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: jz 0x0090   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | wait memory (5 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    155 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: jz 0x0090   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | wait memory (4 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    156 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: jz 0x0090   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | wait memory (3 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    157 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: jz 0x0090   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | wait memory (2 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    158 | 0x0050 read   | PC: 0x0050 AR: 0x0050 IR: jz 0x0090   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | wait memory (1 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    159 | 0x0050 read   | PC: 0x0054 AR: 0x0050 IR: push 172    TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    160 | 0x0050 exec 1 | PC: 0x0054 AR: 0x0050 IR: push 172    TOS: 172 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    161 | 0x0054 fetch  | PC: 0x0054 AR: 0x0054 IR: push 172    TOS: 172 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    162 | 0x0054 read   | PC: 0x0058 AR: 0x0054 IR: load        TOS: 172 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x0054: hit set 5 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    163 | 0x0054 exec 1 | PC: 0x0058 AR: 0x00AC IR: load        TOS: 172 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    164 | 0x0054 exec 2 | PC: 0x0058 AR: 0x00AC IR: load        TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x00AC: hit set 10 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    165 | 0x0058 fetch  | PC: 0x0058 AR: 0x0058 IR: load        TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    166 | 0x0058 read   | PC: 0x005C AR: 0x0058 IR: push 176    TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x0058: hit set 5 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    167 | 0x0058 exec 1 | PC: 0x005C AR: 0x0058 IR: push 176    TOS: 176 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    168 | 0x005C fetch  | PC: 0x005C AR: 0x005C IR: push 176    TOS: 176 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    169 | 0x005C read   | PC: 0x0060 AR: 0x005C IR: load        TOS: 176 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x005C: hit set 5 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    170 | 0x005C exec 1 | PC: 0x0060 AR: 0x00B0 IR: load        TOS: 176 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    171 | 0x005C exec 2 | PC: 0x0060 AR: 0x00B0 IR: load        TOS: 1 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x00B0: hit set 11 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    172 | 0x0060 fetch  | PC: 0x0060 AR: 0x0060 IR: load        TOS: 1 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    173 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 1 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0060: miss set 6 way 0, fill 0x0060, wait memory (10 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    174 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 1 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (9 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    175 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 1 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (8 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    176 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 1 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (7 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    177 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 1 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (6 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    178 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 1 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (5 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    179 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 1 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (4 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    180 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 1 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (3 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    181 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 1 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (2 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    182 | 0x0060 read   | PC: 0x0060 AR: 0x0060 IR: load        TOS: 1 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (1 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    183 | 0x0060 read   | PC: 0x0064 AR: 0x0060 IR: push 2      TOS: 1 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    184 | 0x0060 exec 1 | PC: 0x0064 AR: 0x0060 IR: push 2      TOS: 2 NOS: 1 SP: 3 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    185 | 0x0064 fetch  | PC: 0x0064 AR: 0x0064 IR: push 2      TOS: 2 NOS: 1 SP: 3 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    186 | 0x0064 read   | PC: 0x0068 AR: 0x0064 IR: shl         TOS: 2 NOS: 1 SP: 3 RSP: 2 IE: 0 INT: 0 | mem read 0x0064: hit set 6 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    187 | 0x0064 exec 1 | PC: 0x0068 AR: 0x0064 IR: shl         TOS: 4 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    188 | 0x0068 fetch  | PC: 0x0068 AR: 0x0068 IR: shl         TOS: 4 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    189 | 0x0068 read   | PC: 0x006C AR: 0x0068 IR: add         TOS: 4 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0068: hit set 6 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    190 | 0x0068 exec 1 | PC: 0x006C AR: 0x0068 IR: add         TOS: 184 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    191 | 0x006C fetch  | PC: 0x006C AR: 0x006C IR: add         TOS: 184 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    192 | 0x006C read   | PC: 0x0070 AR: 0x006C IR: load        TOS: 184 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x006C: hit set 6 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    193 | 0x006C exec 1 | PC: 0x0070 AR: 0x00B8 IR: load        TOS: 184 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    194 | 0x006C exec 2 | PC: 0x0070 AR: 0x00B8 IR: load        TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x00B8: hit set 11 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    195 | 0x0070 fetch  | PC: 0x0070 AR: 0x0070 IR: load        TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    196 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: load        TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x0070: miss set 7 way 0, fill 0x0070, wait memory (10 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    197 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: load        TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (9 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    198 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: load        TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (8 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    199 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: load        TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (7 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    200 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: load        TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (6 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    201 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: load        TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (5 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    202 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: load        TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (4 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    203 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: load        TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (3 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    204 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: load        TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (2 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    205 | 0x0070 read   | PC: 0x0070 AR: 0x0070 IR: load        TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | wait memory (1 left) ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    206 | 0x0070 read   | PC: 0x0074 AR: 0x0070 IR: out 1       TOS: 72 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    207 | 0x0070 exec 1 | PC: 0x0074 AR: 0x0070 IR: out 1       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | out 'H' ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    208 | 0x0074 fetch  | PC: 0x0074 AR: 0x0074 IR: out 1       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    209 | 0x0074 read   | PC: 0x0078 AR: 0x0074 IR: push 176    TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | mem read 0x0074: hit set 7 way 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    210 | 0x0074 exec 1 | PC: 0x0078 AR: 0x0074 IR: push 176    TOS: 176 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    211 | 0x0078 fetch  | PC: 0x0078 AR: 0x0078 IR: push 176    TOS: 176 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    212 | 0x0078 read   | PC: 0x007C AR: 0x0078 IR: load        TOS: 176 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x0078: hit set 7 way 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    213 | 0x0078 exec 1 | PC: 0x007C AR: 0x00B0 IR: load        TOS: 176 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    214 | 0x0078 exec 2 | PC: 0x007C AR: 0x00B0 IR: load        TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x00B0: hit set 11 way 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    215 | 0x007C fetch  | PC: 0x007C AR: 0x007C IR: load        TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    216 | 0x007C read   | PC: 0x0080 AR: 0x007C IR: push 1      TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x007C: hit set 7 way 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    217 | 0x007C exec 1 | PC: 0x0080 AR: 0x007C IR: push 1      TOS: 1 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    218 | 0x0080 fetch  | PC: 0x0080 AR: 0x0080 IR: push 1      TOS: 1 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    219 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 1      TOS: 1 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0080: miss set 8 way 0, fill 0x0080, wait memory (10 left) ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    220 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 1      TOS: 1 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (9 left) ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    221 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 1      TOS: 1 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (8 left) ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    222 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 1      TOS: 1 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (7 left) ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    223 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 1      TOS: 1 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (6 left) ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    224 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 1      TOS: 1 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (5 left) ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    225 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 1      TOS: 1 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (4 left) ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    226 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 1      TOS: 1 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (3 left) ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    227 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 1      TOS: 1 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (2 left) ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    228 | 0x0080 read   | PC: 0x0080 AR: 0x0080 IR: push 1      TOS: 1 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 | wait memory (1 left) ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    229 | 0x0080 read   | PC: 0x0084 AR: 0x0080 IR: add         TOS: 1 NOS: 1 SP: 2 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    230 | 0x0080 exec 1 | PC: 0x0084 AR: 0x0080 IR: add         TOS: 2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    231 | 0x0084 fetch  | PC: 0x0084 AR: 0x0084 IR: add         TOS: 2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    232 | 0x0084 read   | PC: 0x0088 AR: 0x0084 IR: push 176    TOS: 2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x0084: hit set 8 way 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    233 | 0x0084 exec 1 | PC: 0x0088 AR: 0x0084 IR: push 176    TOS: 176 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    234 | 0x0088 fetch  | PC: 0x0088 AR: 0x0088 IR: push 176    TOS: 176 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    235 | 0x0088 read   | PC: 0x008C AR: 0x0088 IR: store       TOS: 176 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0088: hit set 8 way 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    236 | 0x0088 exec 1 | PC: 0x008C AR: 0x00B0 IR: store       TOS: 2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    237 | 0x0088 exec 2 | PC: 0x008C AR: 0x00B0 IR: store       TOS: 2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem write 0x00B0: hit set 11 way 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    238 | 0x0088 exec 3 | PC: 0x008C AR: 0x00B0 IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    239 | 0x008C fetch  | PC: 0x008C AR: 0x008C IR: store       TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    240 | 0x008C read   | PC: 0x0090 AR: 0x008C IR: jmp 0x0024  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | mem read 0x008C: hit set 8 way 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    241 | 0x008C exec 1 | PC: 0x0024 AR: 0x008C IR: jmp 0x0024  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 5: i = i + 1;
+  DEBUG   machine:log           TICK:    242 | 0x0024 fetch  | PC: 0x0024 AR: 0x0024 IR: jmp 0x0024  TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    243 | 0x0024 read   | PC: 0x0028 AR: 0x0024 IR: push 176    TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | mem read 0x0024: hit set 2 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    244 | 0x0024 exec 1 | PC: 0x0028 AR: 0x0024 IR: push 176    TOS: 176 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    245 | 0x0028 fetch  | PC: 0x0028 AR: 0x0028 IR: push 176    TOS: 176 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    246 | 0x0028 read   | PC: 0x002C AR: 0x0028 IR: load        TOS: 176 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x0028: hit set 2 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    247 | 0x0028 exec 1 | PC: 0x002C AR: 0x00B0 IR: load        TOS: 176 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    248 | 0x0028 exec 2 | PC: 0x002C AR: 0x00B0 IR: load        TOS: 2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x00B0: hit set 11 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    249 | 0x002C fetch  | PC: 0x002C AR: 0x002C IR: load        TOS: 2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    250 | 0x002C read   | PC: 0x0030 AR: 0x002C IR: push 172    TOS: 2 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x002C: hit set 2 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    251 | 0x002C exec 1 | PC: 0x0030 AR: 0x002C IR: push 172    TOS: 172 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    252 | 0x0030 fetch  | PC: 0x0030 AR: 0x0030 IR: push 172    TOS: 172 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    253 | 0x0030 read   | PC: 0x0034 AR: 0x0030 IR: load        TOS: 172 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0030: hit set 3 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    254 | 0x0030 exec 1 | PC: 0x0034 AR: 0x00AC IR: load        TOS: 172 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    255 | 0x0030 exec 2 | PC: 0x0034 AR: 0x00AC IR: load        TOS: 180 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x00AC: hit set 10 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    256 | 0x0034 fetch  | PC: 0x0034 AR: 0x0034 IR: load        TOS: 180 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    257 | 0x0034 read   | PC: 0x0038 AR: 0x0034 IR: push 0      TOS: 180 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0034: hit set 3 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    258 | 0x0034 exec 1 | PC: 0x0038 AR: 0x0034 IR: push 0      TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    259 | 0x0038 fetch  | PC: 0x0038 AR: 0x0038 IR: push 0      TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    260 | 0x0038 read   | PC: 0x003C AR: 0x0038 IR: push 2      TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 | mem read 0x0038: hit set 3 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    261 | 0x0038 exec 1 | PC: 0x003C AR: 0x0038 IR: push 2      TOS: 2 NOS: 0 SP: 4 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    262 | 0x003C fetch  | PC: 0x003C AR: 0x003C IR: push 2      TOS: 2 NOS: 0 SP: 4 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    263 | 0x003C read   | PC: 0x0040 AR: 0x003C IR: shl         TOS: 2 NOS: 0 SP: 4 RSP: 2 IE: 0 INT: 0 | mem read 0x003C: hit set 3 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    264 | 0x003C exec 1 | PC: 0x0040 AR: 0x003C IR: shl         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    265 | 0x0040 fetch  | PC: 0x0040 AR: 0x0040 IR: shl         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    266 | 0x0040 read   | PC: 0x0044 AR: 0x0040 IR: add         TOS: 0 NOS: 180 SP: 3 RSP: 2 IE: 0 INT: 0 | mem read 0x0040: hit set 4 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    267 | 0x0040 exec 1 | PC: 0x0044 AR: 0x0040 IR: add         TOS: 180 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    268 | 0x0044 fetch  | PC: 0x0044 AR: 0x0044 IR: add         TOS: 180 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    269 | 0x0044 read   | PC: 0x0048 AR: 0x0044 IR: load        TOS: 180 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0044: hit set 4 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    270 | 0x0044 exec 1 | PC: 0x0048 AR: 0x00B4 IR: load        TOS: 180 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    271 | 0x0044 exec 2 | PC: 0x0048 AR: 0x00B4 IR: load        TOS: 13 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x00B4: hit set 11 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    272 | 0x0048 fetch  | PC: 0x0048 AR: 0x0048 IR: load        TOS: 13 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    273 | 0x0048 read   | PC: 0x004C AR: 0x0048 IR: le          TOS: 13 NOS: 2 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0048: hit set 4 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    274 | 0x0048 exec 1 | PC: 0x004C AR: 0x0048 IR: le          TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    275 | 0x004C fetch  | PC: 0x004C AR: 0x004C IR: le          TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    276 | 0x004C read   | PC: 0x0050 AR: 0x004C IR: jz 0x0090   TOS: 1 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x004C: hit set 4 way 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    277 | 0x004C exec 1 | PC: 0x0050 AR: 0x004C IR: jz 0x0090   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 3: while (i <= s[0]) {
+  DEBUG   machine:log           TICK:    278 | 0x0050 fetch  | PC: 0x0050 AR: 0x0050 IR: jz 0x0090   TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    279 | 0x0050 read   | PC: 0x0054 AR: 0x0050 IR: push 172    TOS: 0 NOS: 0 SP: 0 RSP: 2 IE: 0 INT: 0 | mem read 0x0050: hit set 5 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    280 | 0x0050 exec 1 | PC: 0x0054 AR: 0x0050 IR: push 172    TOS: 172 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    281 | 0x0054 fetch  | PC: 0x0054 AR: 0x0054 IR: push 172    TOS: 172 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    282 | 0x0054 read   | PC: 0x0058 AR: 0x0054 IR: load        TOS: 172 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x0054: hit set 5 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    283 | 0x0054 exec 1 | PC: 0x0058 AR: 0x00AC IR: load        TOS: 172 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    284 | 0x0054 exec 2 | PC: 0x0058 AR: 0x00AC IR: load        TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x00AC: hit set 10 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    285 | 0x0058 fetch  | PC: 0x0058 AR: 0x0058 IR: load        TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    286 | 0x0058 read   | PC: 0x005C AR: 0x0058 IR: push 176    TOS: 180 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 | mem read 0x0058: hit set 5 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    287 | 0x0058 exec 1 | PC: 0x005C AR: 0x0058 IR: push 176    TOS: 176 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    288 | 0x005C fetch  | PC: 0x005C AR: 0x005C IR: push 176    TOS: 176 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    289 | 0x005C read   | PC: 0x0060 AR: 0x005C IR: load        TOS: 176 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x005C: hit set 5 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    290 | 0x005C exec 1 | PC: 0x0060 AR: 0x00B0 IR: load        TOS: 176 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    291 | 0x005C exec 2 | PC: 0x0060 AR: 0x00B0 IR: load        TOS: 2 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x00B0: hit set 11 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    292 | 0x0060 fetch  | PC: 0x0060 AR: 0x0060 IR: load        TOS: 2 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    293 | 0x0060 read   | PC: 0x0064 AR: 0x0060 IR: push 2      TOS: 2 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0060: hit set 6 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    294 | 0x0060 exec 1 | PC: 0x0064 AR: 0x0060 IR: push 2      TOS: 2 NOS: 2 SP: 3 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    295 | 0x0064 fetch  | PC: 0x0064 AR: 0x0064 IR: push 2      TOS: 2 NOS: 2 SP: 3 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    296 | 0x0064 read   | PC: 0x0068 AR: 0x0064 IR: shl         TOS: 2 NOS: 2 SP: 3 RSP: 2 IE: 0 INT: 0 | mem read 0x0064: hit set 6 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    297 | 0x0064 exec 1 | PC: 0x0068 AR: 0x0064 IR: shl         TOS: 8 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    298 | 0x0068 fetch  | PC: 0x0068 AR: 0x0068 IR: shl         TOS: 8 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    299 | 0x0068 read   | PC: 0x006C AR: 0x0068 IR: add         TOS: 8 NOS: 180 SP: 2 RSP: 2 IE: 0 INT: 0 | mem read 0x0068: hit set 6 way 0 ; 4: out(1, s[i]);
+  DEBUG   machine:log           TICK:    300 | 0x0068 exec 1 | PC: 0x006C AR: 0x0068 IR: add         TOS: 188 NOS: 0 SP: 1 RSP: 2 IE: 0 INT: 0 ; 4: out(1, s[i]);
+  DEBUG   machine:simulate      ... log truncated after 300 ticks
+out_no_cache: |
+  Hello, World!
+  instructions: 377 ticks: 5629
+out_stdout: |
+  source LoC: 11 code instr: 43 data words: 16
+  =====
+  Hello, World!
+  instructions: 377 ticks: 1405 cache: hits 471 misses 15
+out_code_hex: |
+  0x0000 - 50000008 - jmp 0x0008 (.start)          ; reset vector
+  0x0004 - 72000000 - iret                         ; interrupt vector (no handler)
+  0x0008 - 52000098 - call 0x0098 (main)           ; start
+  0x000C - 01000000 - halt                         ; start
+  0x0010 - 100000AC - push 0x00AC (print_str.s)    ; 1: fn print_str(s) {
+  0x0014 - 21000000 - store                        ; 1: fn print_str(s) {
+  0x0018 - 10000001 - push 1                       ; 2: let i = 1;
+  0x001C - 100000B0 - push 0x00B0 (print_str.i)    ; 2: let i = 1;
+  0x0020 - 21000000 - store                        ; 2: let i = 1;
+  0x0024 - 100000B0 - push 0x00B0 (print_str.i)    ; 3: while (i <= s[0]) {
+  0x0028 - 20000000 - load                         ; 3: while (i <= s[0]) {
+  0x002C - 100000AC - push 0x00AC (print_str.s)    ; 3: while (i <= s[0]) {
+  0x0030 - 20000000 - load                         ; 3: while (i <= s[0]) {
+  0x0034 - 10000000 - push 0                       ; 3: while (i <= s[0]) {
+  0x0038 - 10000002 - push 2                       ; 3: while (i <= s[0]) {
+  0x003C - 38000000 - shl                          ; 3: while (i <= s[0]) {
+  0x0040 - 30000000 - add                          ; 3: while (i <= s[0]) {
+  0x0044 - 20000000 - load                         ; 3: while (i <= s[0]) {
+  0x0048 - 3D000000 - le                           ; 3: while (i <= s[0]) {
+  0x004C - 51000090 - jz 0x0090 (.endwhile2)       ; 3: while (i <= s[0]) {
+  0x0050 - 100000AC - push 0x00AC (print_str.s)    ; 4: out(1, s[i]);
+  0x0054 - 20000000 - load                         ; 4: out(1, s[i]);
+  0x0058 - 100000B0 - push 0x00B0 (print_str.i)    ; 4: out(1, s[i]);
+  0x005C - 20000000 - load                         ; 4: out(1, s[i]);
+  0x0060 - 10000002 - push 2                       ; 4: out(1, s[i]);
+  0x0064 - 38000000 - shl                          ; 4: out(1, s[i]);
+  0x0068 - 30000000 - add                          ; 4: out(1, s[i]);
+  0x006C - 20000000 - load                         ; 4: out(1, s[i]);
+  0x0070 - 61000001 - out 1                        ; 4: out(1, s[i]);
+  0x0074 - 100000B0 - push 0x00B0 (print_str.i)    ; 5: i = i + 1;
+  0x0078 - 20000000 - load                         ; 5: i = i + 1;
+  0x007C - 10000001 - push 1                       ; 5: i = i + 1;
+  0x0080 - 30000000 - add                          ; 5: i = i + 1;
+  0x0084 - 100000B0 - push 0x00B0 (print_str.i)    ; 5: i = i + 1;
+  0x0088 - 21000000 - store                        ; 5: i = i + 1;
+  0x008C - 50000024 - jmp 0x0024 (.while1)         ; 5: i = i + 1;
+  0x0090 - 10000000 - push 0                       ; end of print_str: implicit return 0
+  0x0094 - 53000000 - ret                          ; end of print_str
+  0x0098 - 100000B4 - push 0x00B4 (.str0)          ; 10: print_str("Hello, World!");
+  0x009C - 52000010 - call 0x0010 (print_str)      ; 10: print_str("Hello, World!");
+  0x00A0 - 12000000 - drop                         ; 10: print_str("Hello, World!");
+  0x00A4 - 10000000 - push 0                       ; end of main: implicit return 0
+  0x00A8 - 53000000 - ret                          ; end of main
+  0x00AC - 00000000 - data                         ; print_str.s: var
+  0x00B0 - 00000000 - data                         ; print_str.i: var
+  0x00B4 - 0000000D - data                         ; .str0: pstr 'Hello, World!'
+  0x00B8 - 00000048 - data                         ; .str0+1
+  0x00BC - 00000065 - data                         ; .str0+2
+  0x00C0 - 0000006C - data                         ; .str0+3
+  0x00C4 - 0000006C - data                         ; .str0+4
+  0x00C8 - 0000006F - data                         ; .str0+5
+  0x00CC - 0000002C - data                         ; .str0+6
+  0x00D0 - 00000020 - data                         ; .str0+7
+  0x00D4 - 00000057 - data                         ; .str0+8
+  0x00D8 - 0000006F - data                         ; .str0+9
+  0x00DC - 00000072 - data                         ; .str0+10
+  0x00E0 - 0000006C - data                         ; .str0+11
+  0x00E4 - 00000064 - data                         ; .str0+12
+  0x00E8 - 00000021 - data                         ; .str0+13
+out_code: |
+  50000008 72000000 52000098 01000000 100000AC 21000000 10000001 100000B0
+  21000000 100000B0 20000000 100000AC 20000000 10000000 10000002 38000000
+  30000000 20000000 3D000000 51000090 100000AC 20000000 100000B0 20000000
+  10000002 38000000 30000000 20000000 61000001 100000B0 20000000 10000001
+  30000000 100000B0 21000000 50000024 10000000 53000000 100000B4 52000010
+  12000000 10000000 53000000 00000000 00000000 0000000D 00000048 00000065
+  0000006C 0000006C 0000006F 0000002C 00000020 00000057 0000006F 00000072
+  0000006C 00000064 00000021
+out_ast: |
+  fn print_str(s)
+    let i = 1
+    while (<= i ([] s 0))
+      expr (call out 1 ([] s i))
+      set i = (+ i 1)
+  fn main()
+    expr (call print_str 'Hello, World!')
