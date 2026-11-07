@@ -58,7 +58,7 @@ DOUBLE_CHAR = {
     ">>": "SHR",
 }
 
-# `\0` нужен программам на alg: токен 0 во вводе -- признак конца данных.
+# токен 0 во вводе означает конец данных.
 ESCAPES = {
     "n": "\n",
     "t": "\t",
@@ -130,7 +130,6 @@ class Lexer:
         self.emit("STRING", "".join(chars))
 
     def read_char(self) -> None:
-        # Символьный литерал
         self.pos += 1
         char = self.read_quoted_char()
         if self.peek() != "'":

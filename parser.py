@@ -206,7 +206,7 @@ class Parser:
             raise ParseError(keyword, "interrupt handler can't have parameters")
         return Function(name, tuple(params), self.block(), is_interrupt, keyword.line)
 
-    # операторы
+    # Операторы
     def block(self) -> Block:
         line = self.expect("LBRACE").line
         stmts: list[Stmt] = []
@@ -262,7 +262,6 @@ class Parser:
                 otherwise = self.block()
         return If(cond, then, otherwise, line)
 
-    # Присваивание или выражение
     def assign_or_expr(self) -> Stmt:
         line = self.current.line
         expr = self.expression()
@@ -275,7 +274,7 @@ class Parser:
         self.expect("SEMICOLON")
         return ExprStmt(expr, line)
 
-    # выражения
+    # Выражения
     def paren_expr(self) -> Expr:
         self.expect("LPAREN")
         expr = self.expression()
