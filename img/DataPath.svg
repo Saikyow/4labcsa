@@ -1,0 +1,216 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1450" viewBox="0 0 1800 1450" role="img" aria-labelledby="title desc">
+<title id="title">DataPath стекового процессора</title>
+<desc id="desc">Пути данных и интерфейс ControlUnit по machine.py. Одинаковые имена синих терминалов обозначают одну сеть. Оранжевым показано управление.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2563eb"/></marker><marker id="ctl" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#b45309"/></marker></defs>
+
+<rect width="1800" height="1450" fill="#fff"/>
+
+<text x="35" y="48" font-family="DejaVu Sans" font-size="32" fill="#172554" font-weight="bold" text-anchor="start">DataPath · стековый процессор · 32 бита</text>
+<text x="35" y="80" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">Синие стрелки — данные; одинаковые имена терминалов соединены. Оранжевые подписи — управление.</text>
+<rect x="25" y="105" width="1320" height="325" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="48" y="139" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="start">01  Счётчик команд и стек возвратов</text>
+<rect x="255" y="205" width="220" height="85" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="365.0" y="235" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">MUX PC</text>
+<text x="365.0" y="260" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">NEXT / IMM / RS / VECTOR</text>
+<text x="285" y="310" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">pc: PcSel | None</text>
+<text x="70" y="185" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">TARGET</text>
+<polyline points="70,195 255,225" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="255.0,225.0 245.7692298567388,219.45086650347304 244.4886605883095,227.3477103254537" fill="#2563eb"/>
+<text x="70" y="250" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">0x0004</text>
+<polyline points="70,260 255,260" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="255.0,260.0 245.0,256.0 245.0,264.0" fill="#2563eb"/>
+<text x="280" y="175" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">RS_TOP</text>
+<polyline points="280,185 340,205" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="340.0,205.0 331.7780780835622,198.04298914762958 329.2482559554275,205.63245553203367" fill="#2563eb"/>
+<rect x="560" y="205" width="140" height="85" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="630.0" y="235" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">PC</text>
+<text x="630.0" y="260" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">reset = 0</text>
+<polyline points="475,247 560,247" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="560.0,247.0 550.0,243.0 550.0,251.0" fill="#2563eb"/>
+<rect x="560" y="335" width="140" height="65" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="630.0" y="365" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">+4</text>
+<polyline points="630,290 630,335" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="630.0,335.0 634.0,325.0 626.0,325.0" fill="#2563eb"/>
+<polyline points="560,367 500,367 500,180 425,180 425,205" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="425.0,205.0 429.0,195.0 421.0,195.0" fill="#2563eb"/>
+<text x="500" y="168" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">PC + 4</text>
+<polyline points="700,247 765,247" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="765.0,247.0 755.0,243.0 755.0,251.0" fill="#2563eb"/>
+<text x="773" y="253" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">PC</text>
+<rect x="950" y="205" width="325" height="110" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="1112.5" y="235" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">RS[32] + RSP</text>
+<text x="1112.5" y="260" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">push: RS[RSP] ← PC; RSP++</text>
+<text x="1112.5" y="282" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">pop: RSP--</text>
+<text x="825" y="170" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">PC</text>
+<polyline points="825,180 990,205" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="990.0,205.0 980.7120664754643,199.547084188821 979.5136234400404,207.45680822261912" fill="#2563eb"/>
+<polyline points="1110,315 1110,355" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="1110.0,355.0 1114.0,345.0 1106.0,345.0" fill="#2563eb"/>
+<text x="1118" y="361" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">RS_TOP = RS[RSP−1]</text>
+<text x="975" y="190" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">rs: PUSH / POP / None</text>
+<text x="70" y="416" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">При call сохраняется текущий PC: он уже увеличен на 4 при выборке инструкции.</text>
+<rect x="25" y="450" width="1320" height="425" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="48" y="484" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="start">02  Общая память команд и данных</text>
+<rect x="130" y="565" width="160" height="80" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="210.0" y="595" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">MUX AR</text>
+<text x="210.0" y="620" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">PC / TOS</text>
+<text x="55" y="525" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">PC</text>
+<polyline points="55,535 170,565" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="170.0,565.0 161.33351486461956,558.6053119389426 159.31413968744354,566.3462501181173" fill="#2563eb"/>
+<text x="225" y="525" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">TOS</text>
+<polyline points="225,535 255,565" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="255.0,565.0 250.7573593128807,555.1005050633884 245.10050506338834,560.7573593128808" fill="#2563eb"/>
+<text x="115" y="675" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">ar: ArSel | None</text>
+<rect x="355" y="565" width="110" height="80" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="410.0" y="595" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">AR</text>
+<polyline points="290,605 355,605" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="355.0,605.0 345.0,601.0 345.0,609.0" fill="#2563eb"/>
+<rect x="550" y="545" width="305" height="120" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="702.5" y="575" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">Cache</text>
+<text x="702.5" y="600" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">16 sets × 2 ways × 4 words</text>
+<text x="702.5" y="622" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">LRU · write-back · write-allocate</text>
+<polyline points="465,605 550,605" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="550.0,605.0 540.0,601.0 540.0,609.0" fill="#2563eb"/>
+<text x="480" y="590" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">адрес</text>
+<text x="570" y="500" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">TOS · данные записи</text>
+<polyline points="570,510 625,545" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="625.0,545.0 618.7108870914516,536.25659912714 614.4158831539063,543.0058910289969" fill="#2563eb"/>
+<text x="575" y="690" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">mem: READ / WRITE / None</text>
+<rect x="550" y="750" width="305" height="90" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="702.5" y="780" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">RAM</text>
+<text x="702.5" y="805" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">4096 × 32 бита · адреса в байтах</text>
+<polyline points="640,665 640,750" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="640.0,750.0 644.0,740.0 636.0,740.0" fill="#2563eb"/>
+<polyline points="780,750 780,665" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="780.0,665.0 776.0,675.0 784.0,675.0" fill="#2563eb"/>
+<text x="570" y="727" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">write-back</text>
+<text x="785" y="727" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">fill</text>
+<rect x="925" y="565" width="130" height="80" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="990.0" y="595" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">MDR</text>
+<text x="990.0" y="620" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">32 бита</text>
+<polyline points="855,605 925,605" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="925.0,605.0 915.0,601.0 915.0,609.0" fill="#2563eb"/>
+<text x="860" y="590" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">read</text>
+<rect x="1130" y="565" width="150" height="80" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="1205.0" y="595" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">IR</text>
+<text x="1205.0" y="620" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">opcode / operand</text>
+<polyline points="1055,605 1130,605" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="1130.0,605.0 1120.0,601.0 1120.0,609.0" fill="#2563eb"/>
+<text x="1140" y="550" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">ir: bool</text>
+<polyline points="990,645 990,685" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="990.0,685.0 994.0,675.0 986.0,675.0" fill="#2563eb"/>
+<text x="998" y="691" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">MDR</text>
+<polyline points="1205,645 1205,705" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="1205.0,705.0 1209.0,695.0 1201.0,695.0" fill="#2563eb"/>
+<text x="925" y="730" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">OP / IMM / TARGET / PORT</text>
+<text x="925" y="758" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">IMM: sign-extend 24 → 32 (push)</text>
+<text x="925" y="785" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">TARGET / PORT: zero-extend 24 → 32</text>
+<text x="925" y="820" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">В коде расширение выполняет decode().</text>
+<rect x="25" y="895" width="1320" height="520" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="48" y="929" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="start">03  Стек данных, АЛУ и порты</text>
+<rect x="420" y="1015" width="320" height="90" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="580.0" y="1045" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">MUX TOS</text>
+<text x="580.0" y="1070" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">ALU / NOS / IMM / MEM / PORT</text>
+<text x="435" y="1130" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">tos: TosSel | None</text>
+<text x="65" y="995" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">IMM</text>
+<polyline points="65,1005 420,1035" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="420.0,1035.0 410.37234467304,1030.1721378535362 409.69868948981247,1038.143724188395" fill="#2563eb"/>
+<text x="65" y="1050" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">MDR (int32)</text>
+<polyline points="65,1060 420,1060" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="420.0,1060.0 410.0,1056.0 410.0,1064.0" fill="#2563eb"/>
+<text x="65" y="1105" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">INPUT</text>
+<polyline points="65,1115 420,1085" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="420.0,1085.0 409.69868948981247,1081.856275811605 410.37234467304,1089.8278621464638" fill="#2563eb"/>
+<text x="450" y="965" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">NOS</text>
+<polyline points="450,975 500,1015" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="500.0,1015.0 494.6900920957874,1005.6295742866836 489.692531715352,1011.8765247622279" fill="#2563eb"/>
+<text x="650" y="965" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">ALU_RESULT</text>
+<polyline points="650,975 680,1015" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="680.0,1015.0 677.2,1004.6 670.8,1009.4" fill="#2563eb"/>
+<rect x="835" y="1015" width="155" height="90" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="912.5" y="1045" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">TOS</text>
+<text x="912.5" y="1070" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">32 бита · reset = 0</text>
+<polyline points="740,1060 835,1060" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="835.0,1060.0 825.0,1056.0 825.0,1064.0" fill="#2563eb"/>
+<polyline points="990,1060 1040,1060" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="1040.0,1060.0 1030.0,1056.0 1030.0,1064.0" fill="#2563eb"/>
+<text x="1048" y="1066" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">TOS</text>
+<rect x="1080" y="1175" width="215" height="110" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="1187.5" y="1205" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">DS[32] + SP</text>
+<text x="1187.5" y="1230" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">push: DS[SP] ← TOS</text>
+<text x="1187.5" y="1252" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">SP++; pop: SP--</text>
+<text x="1100" y="1130" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">TOS</text>
+<polyline points="1100,1140 1180,1175" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="1180.0,1175.0 1172.441701987057,1167.3271823201942 1169.2351513148992,1174.6564409994119" fill="#2563eb"/>
+<text x="1080" y="1320" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">ds: PUSH / POP / None</text>
+<polyline points="1180,1285 1180,1360" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="1180.0,1360.0 1184.0,1350.0 1176.0,1350.0" fill="#2563eb"/>
+<text x="1045" y="1390" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">NOS = DS[SP−1]</text>
+<rect x="590" y="1200" width="260" height="100" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="720.0" y="1230" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">ALU</text>
+<text x="720.0" y="1255" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">A = NOS; B = TOS</text>
+<text x="720.0" y="1277" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">neg / not: только B</text>
+<text x="470" y="1160" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">NOS (A)</text>
+<polyline points="470,1170 630,1200" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="630.0,1200.0 620.9084322708575,1194.2256259017608 619.4341239904561,1202.0886033972356" fill="#2563eb"/>
+<text x="760" y="1160" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">TOS (B)</text>
+<polyline points="760,1170 790,1200" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="790.0,1200.0 785.7573593128807,1190.1005050633883 780.1005050633883,1195.7573593128807" fill="#2563eb"/>
+<polyline points="720,1300 720,1340" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="720.0,1340.0 724.0,1330.0 716.0,1330.0" fill="#2563eb"/>
+<text x="728" y="1346" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">ALU_RESULT</text>
+<text x="590" y="1380" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">Операция: OP = IR.opcode</text>
+<rect x="70" y="1190" width="300" height="85" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="220.0" y="1220" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">Ввод · порт 0</text>
+<text x="220.0" y="1245" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">один токен; in сбрасывает IRQ</text>
+<polyline points="100,1190 100,1150" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="100.0,1150.0 96.0,1160.0 104.0,1160.0" fill="#2563eb"/>
+<text x="108" y="1156" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">INPUT</text>
+<rect x="70" y="1310" width="300" height="75" rx="8" fill="#eff6ff" stroke="#64748b" stroke-width="1.5"/>
+<text x="220.0" y="1340" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">Вывод · порт 1</text>
+<text x="220.0" y="1365" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">port_out: записать символ TOS</text>
+<text x="405" y="1320" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">TOS</text>
+<polyline points="405,1330 370,1340" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="370.0,1340.0 380.71412398799777,1341.0988845115896 378.51635496481873,1333.406692930463" fill="#2563eb"/>
+<text x="55" y="1400" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">Номер порта: PORT = IR.operand</text>
+<rect x="1110" y="955" width="180" height="75" rx="8" fill="#fff7ed" stroke="#64748b" stroke-width="1.5"/>
+<text x="1200.0" y="985" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">TOS == 0</text>
+<text x="1200.0" y="1010" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">Z → CU</text>
+<text x="1140" y="915" font-family="DejaVu Sans" font-size="17" fill="#1d4ed8" font-weight="bold" text-anchor="start">TOS</text>
+<polyline points="1140,925 1190,955" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polygon points="1190.0,955.0 1183.4830537645846,946.4250707428746 1179.3670877211646,953.2850141485749" fill="#2563eb"/>
+<rect x="1380" y="105" width="390" height="1310" rx="8" fill="#fff7ed" stroke="#64748b" stroke-width="1.5"/>
+<text x="1575.0" y="135" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="middle">ControlUnit</text>
+<text x="1575.0" y="160" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="middle">Hardwired · конечный автомат</text>
+<text x="1400" y="210" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="start">Входы</text>
+<text x="1400" y="250" font-family="DejaVu Sans" font-size="18" fill="#172554" font-weight="normal" text-anchor="start">OP = IR.opcode</text>
+<text x="1400" y="282" font-family="DejaVu Sans" font-size="18" fill="#172554" font-weight="normal" text-anchor="start">Z = (TOS == 0)</text>
+<text x="1400" y="314" font-family="DejaVu Sans" font-size="18" fill="#172554" font-weight="normal" text-anchor="start">IRQ от устройства ввода</text>
+<text x="1400" y="346" font-family="DejaVu Sans" font-size="18" fill="#172554" font-weight="normal" text-anchor="start">Access.ticks от Cache / RAM</text>
+<text x="1400" y="410" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="start">Сигналы Signals</text>
+<text x="1400" y="450" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">pc → MUX PC и запись PC</text>
+<text x="1400" y="484" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">ar → MUX AR и запись AR</text>
+<text x="1400" y="518" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">tos → MUX TOS и запись TOS</text>
+<text x="1400" y="552" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">ir → запись IR</text>
+<text x="1400" y="586" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">ds / rs → операции стеков</text>
+<text x="1400" y="620" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">mem → чтение / запись</text>
+<text x="1400" y="654" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">port_out → устройство вывода</text>
+<text x="1400" y="688" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">ie / interrupt → флаги</text>
+<text x="1400" y="722" font-family="DejaVu Sans" font-size="16" fill="#92400e" font-weight="normal" text-anchor="start">halt → остановка CU</text>
+<text x="1400" y="795" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="start">IE и INT</text>
+<text x="1400" y="830" font-family="DejaVu Sans" font-size="18" fill="#172554" font-weight="normal" text-anchor="start">Хранятся в DataPath; reset = 0.</text>
+<text x="1400" y="866" font-family="DejaVu Sans" font-size="18" fill="#172554" font-weight="normal" text-anchor="start">Вход: IE ← 0, INT ← 1</text>
+<text x="1400" y="902" font-family="DejaVu Sans" font-size="18" fill="#172554" font-weight="normal" text-anchor="start">iret: IE ← 1, INT ← 0</text>
+<text x="1400" y="938" font-family="DejaVu Sans" font-size="18" fill="#172554" font-weight="normal" text-anchor="start">Приём IRQ: IE &amp;&amp; IRQ</text>
+<text x="1400" y="974" font-family="DejaVu Sans" font-size="18" fill="#172554" font-weight="normal" text-anchor="start">после завершения инструкции.</text>
+<text x="1400" y="1040" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="start">Ожидание памяти</text>
+<text x="1400" y="1080" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">CU.wait ← Access.ticks</text>
+<text x="1400" y="1112" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">Пока wait &gt; 0, шаг удерживается.</text>
+<text x="1400" y="1144" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">apply(Signals) — после ожидания.</text>
+<text x="1400" y="1176" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">Отдельного ready в коде нет.</text>
+<text x="1400" y="1250" font-family="DejaVu Sans" font-size="22" fill="#172554" font-weight="bold" text-anchor="start">Правило такта</text>
+<text x="1400" y="1290" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">PC, AR, TOS и стеки используют</text>
+<text x="1400" y="1317" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">значения до обновления.</text>
+<text x="1400" y="1344" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">MDR заполняет memory_access();</text>
+<text x="1400" y="1371" font-family="DejaVu Sans" font-size="16" fill="#475569" font-weight="normal" text-anchor="start">IR/TOS читают его в конце ожидания.</text>
+</svg>

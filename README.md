@@ -131,7 +131,7 @@ push x ; store         []
 
 - Стековый процессор: операнды на стеке данных, вершина в регистре TOS, под ней NOS
   (`DS[SP-1]`).
-- Регистры: `PC`, `IR`, `AR`, `TOS`, `SP`, `RSP`, флаги `IE` и `INT`.
+- Регистры: `PC`, `IR`, `AR`, `MDR`, `TOS`, `SP`, `RSP`, флаги `IE` и `INT`.
 - Память доступна только через `load`/`store`, адрес на вершине стека.
 - Ввод-вывод портовый: порт 0 ввод, порт 1 вывод символа.
 - Прерывание от устройства ввода проверяется между инструкциями.
@@ -171,7 +171,7 @@ push x ; store         []
 | 51 | `jz addr` | `if TOS == 0: PC <- addr`; `pop()` | 1 |
 | 52 | `call addr` | `RS.push(PC); PC <- addr` | 1 |
 | 53 | `ret` | `PC <- RS.pop()` | 1 |
-| 60 | `in port` | `push(port)`, снимает запрос прерывания | 1 |
+| 60 | `in port` | `push(input[port])`, снимает запрос прерывания | 1 |
 | 61 | `out port` | `port <- TOS; pop()` | 1 |
 | 70 | `ei` | `IE <- 1` | 1 |
 | 71 | `di` | `IE <- 0` | 1 |
@@ -222,22 +222,42 @@ python machine.py <target.bin> <input> [--no-cache]
 
 ### DataPath
 
-![DataPath](img/DataPath.png)
+![DataPath](img/DataPath.svg)
 
-| Сигнал | Действие |
-|--------|----------|
-| `latch_pc` + `sel_pc` | `PC <- PC + 4 / IR.operand / RS[RSP-1] / 0x0004` |
-| `latch_ar` + `sel_ar` | `AR <- PC / TOS` |
-| `latch_ir` | `IR <- MDR` |
-| `latch_tos` + `sel_tos` | `TOS <- ALU / NOS / IR.operand / MDR / порт ввода` |
-| `ds_push` / `ds_pop` | `DS[SP] <- TOS, SP++` / `SP--` |
-| `rs_push` / `rs_pop` | `RS[RSP] <- PC, RSP++` / `RSP--` |
-| `mem_read` / `mem_write` | `MDR <- mem[AR]` / `mem[AR] <- TOS` через кеш, ответ `ready` |
-| `port_out` | `порт вывода <- TOS` |
-| `set_ie` / `clear_ie`, `set_int` / `clear_int` | флаги `IE` и `INT` |
+Векторная [схема](img/DataPath.svg) использует имена полей класса `Signals`.
+Синие стрелки показывают данные; терминалы с одинаковыми именами обозначают
+одну сеть. Оранжевые подписи показывают управление. Все слова данных — 32 бита.
+`IMM` — знаково расширенный operand24 для `push`, `TARGET` и `PORT` —
+беззнаковый operand24. В модели расширение выполняет `decode()` в [isa.py](isa.py).
 
-В коде сигналы такта: класс `Signals`. Все защёлки срабатывают по одному фронту,
-новые значения вычисляются из состояния до такта.
+| Поле `Signals` | Действие |
+|----------------|----------|
+| `pc` | `None`: удержать PC; `NEXT`: PC + 4; `IMM`: TARGET; `RS`: RS[RSP-1]; `VECTOR`: 0x0004 |
+| `ar` | `None`: удержать AR; `PC` / `TOS`: выбрать источник и записать AR |
+| `ir` | При True: `IR <- decode(MDR)` |
+| `tos` | `None`: удержать TOS; `ALU` / `NOS` / `IMM` / `MEM` / `PORT`: записать выбранное значение |
+| `ds` | `PUSH`: DS[SP] <- старый TOS, SP++; `POP`: SP--; `None`: без изменений |
+| `rs` | `PUSH`: RS[RSP] <- старый PC, RSP++; `POP`: RSP--; `None`: без изменений |
+| `mem` | `READ`: MDR <- mem[AR]; `WRITE`: mem[AR] <- TOS, через кеш |
+| `port_out` | При True: порт 1 <- старый TOS; номер порта берётся из IR.operand |
+| `ie` / `interrupt` | True / False: установить / сбросить IE / INT; `None`: удержать |
+| `halt` | При True: остановить CU после выполнения такта |
+
+АЛУ вычисляет `NOS op TOS`; `neg` и `not` используют только TOS.
+Операция определяется `IR.opcode` (в коде отдельного поля `alu_op` нет).
+`Z = (TOS == 0)` — комбинационное условие для `jz`, отдельного регистра Z нет.
+При `in 0` читается токен устройства, сбрасывается IRQ, старый TOS уходит в DS.
+При `out 1` выводится старый TOS и одновременно восстанавливается NOS.
+
+PC, AR, TOS и стеки обновляются в `DataPath.apply()` из значений до обновления.
+MDR заполняется отдельно в `memory_access()`: затем CU выдерживает
+`Access.ticks` и только в конце ожидания вызывает `apply()`.
+Поэтому IR или TOS могут получить прочитанное значение в такт завершения доступа.
+Аппаратный `ready` был бы эквивалентом завершения ожидания; в Python-модели
+отдельного сигнала `ready` нет, используется счётчик `ControlUnit.wait`.
+
+Подробности `store`, `call`, прерываний и соответствие схеме:
+[docs/datapath.md](docs/datapath.md).
 
 ### ControlUnit
 
@@ -329,3 +349,4 @@ $ python machine.py cat.bin input.txt --no-cache 2> /dev/null
 Hi
 instructions: 191 ticks: 2810 cache: off
 ```
+
